@@ -11,9 +11,10 @@ class Edll : public Deque<T>
         void removeAtMiddle(int indexParm);
 };
 
+template <typename T>
 void Edll<T>::insertAtMiddle(int indexParm, const T& dataParm)
 {
-    if(indexParm < 0 || indexparm > this->mCount)
+    if(indexParm < 0 || indexParm > this->mCount)
     {
         std::cout << "Out of range\n"; 
         return;

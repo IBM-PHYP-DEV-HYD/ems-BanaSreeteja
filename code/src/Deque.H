@@ -39,7 +39,6 @@ class Deque
         T& operator[](size_t positionParm);
         bool isDequeEmpty();
 
-        virtual void processDeque() = 0;
 
 };
 
