@@ -50,7 +50,7 @@ enum HiringFromBranches
 
 
 void printMainMenu();
-
+void printEmployeeOption();
 
 
 #endif

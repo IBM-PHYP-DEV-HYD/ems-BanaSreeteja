@@ -44,13 +44,13 @@ void Edll<T>::insertAtMiddle(int indexParm, const T& dataParm)
     sCurrent->mPrev->mNext = sNewNode;
     sCurrent->mPrev = sNewNode;
 
-    ++this->mSize;
+    ++this->mCount;
 }
 
 template <typename T>
 void Edll<T>::removeAtMiddle(int indexParm)
 {
-    if (indexParm < 0 || indexParm >= this->mSize)
+    if (indexParm < 0 || indexParm >= this->mCount)
     {
         std::cout << "Out of range\n"; 
         return;
@@ -77,7 +77,7 @@ void Edll<T>::removeAtMiddle(int indexParm)
     sCurrent->mNext->mPrev = sCurrent->mPrev;
 
     delete sCurrent;
-    --this->mSize;
+    --this->mCount;
 }
 
 

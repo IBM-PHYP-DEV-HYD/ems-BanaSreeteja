@@ -19,7 +19,8 @@ int main()
         {
             case MainMenu::ADD_EMPLOYEE:
             {
-
+                printEmployeeOption();
+                
                 break;
             }
 
@@ -53,11 +54,7 @@ int main()
                 break;
             }
         }
-
-
     }
-
-
 
     return 0;
 }
