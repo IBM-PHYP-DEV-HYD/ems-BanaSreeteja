@@ -3,7 +3,7 @@
 
 class XyzFullTimeEmployee :: public XyzEmployee
 {
-    protected:
+    private:
         int mLeavesAvailed;
         int mLeavesLeft;
 

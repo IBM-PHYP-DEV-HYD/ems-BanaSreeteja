@@ -10,6 +10,9 @@ class XyzEmployeeManager
 
     Edll<XyzEmployeeIF*> mActiveInactiveEmpDeue;
     Edll<XyzEmployeeIF*> mResignedEmpDeque;
+    void pAddFullTimeEmployee()
+    void pAddInternEmployee();
+    void pAddContractEmployee();
 
     public:
         XyzEmployeeManager();

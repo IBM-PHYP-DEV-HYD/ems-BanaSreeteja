@@ -30,3 +30,23 @@ XyzInternEmployee :: ~XyzInternEmployee
 
 }
 
+HiringFromColleges XyzInternEmployee::getCollege()
+{
+    return mHiringClg;
+}
+
+HiringFromBranches XyzInternEmployee::getBranch()
+{
+    return mHiringBranch;
+}
+
+void XyzInternEmployee::setBranch(HiringFromBranches branchParm)
+{
+    mHiringBranch = branchParm;
+}
+
+void XyzInternEmployee::setCollege(HiringFromColleges collegeParm)
+{
+    mHiringClg = collegeParm;
+}
+

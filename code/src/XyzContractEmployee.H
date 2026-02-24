@@ -5,7 +5,7 @@
 
 class XyzContractEmployee :: public XyzEmployee
 {
-    protected:
+    private:
 
         ExternalAgency mExtAgency;
         
@@ -23,6 +23,9 @@ class XyzContractEmployee :: public XyzEmployee
                             ExternalAgency extAgencyParm);
 
         ~XyzContractEmployee();
+
+        ExternalAgency getEmpExternalAgency();
+        void getEmpExternalAgency(ExternalAgency externalAgencyParm);
         
 };
 

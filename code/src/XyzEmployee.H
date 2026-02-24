@@ -5,7 +5,7 @@
 
 class XyzEmployee :: public XyzEmployeeIF
 {
-    protected:
+    private:
 
     std::string mEmployeeName;
     std::string mEmployeeGender;
@@ -28,14 +28,14 @@ class XyzEmployee :: public XyzEmployeeIF
                 string DateOfLeavingParm);
                 
     ~XyzEmployee();
-    std::string getEmployeeName();
-    std::string getEmployeeGender();
-    std::string getEmployeeId();
-    EmployeeType getEmployeeType();
-    EmployeeStatus getEmployeeStatus();
-    std::string getDOJ();
-    std::string getDOB();
-    std::string getDOL();
+    std::string getEmployeeName override;
+    std::string getEmployeeGender override;
+    std::string getEmployeeId override;
+    EmployeeType getEmployeeType override;
+    EmployeeStatus getEmployeeStatus override;
+    std::string getDOJ override;
+    std::string getDOB override;
+    std::string getDOL override;
 
 }
 

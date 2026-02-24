@@ -31,7 +31,12 @@ XyzContractEmployee:: ~XyzContractEmployee()
 
 }
 
-ExternalAgency XyzContractEmployee:: ()
+ExternalAgency XyzContractEmployee::getEmpExternalAgency()
 {
+    return mExtAgency;
+}
 
+void XyzContractEmployee::getEmpExternalAgency(ExternalAgency externalAgencyParm)
+{
+    mExtAgency = externalAgencyParm;
 }

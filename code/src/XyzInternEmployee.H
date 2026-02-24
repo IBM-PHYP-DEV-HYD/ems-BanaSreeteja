@@ -4,7 +4,7 @@
 class XyzInternEmployee :: public XyzEmployee
 {
 
-    protected:
+    private:
         HiringFromColleges mHiringClg;
         HiringFromBranches mHiringBranch;
 
@@ -23,6 +23,13 @@ class XyzInternEmployee :: public XyzEmployee
                 HiringFromBranches HiringBranchParm);
                 
         ~XyzInternEmployee();
+
+        HiringFromColleges getCollege();
+        HiringFromBranches getBranch();
+        
+        void setCollege(HiringFromColleges collegeParm);
+        void setBranch(HiringFromBranches branchParm);
+
 
 };
 
