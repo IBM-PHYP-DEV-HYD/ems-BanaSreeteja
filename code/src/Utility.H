@@ -48,6 +48,13 @@ enum HiringFromBranches
     UNDEFINED_BRANCH  = 3
 };
 
+enum ExternalAgency
+{
+    AVENGERS                   = 0,
+    JUSTICE_LEAUGE             = 1,
+    X_MEN                      = 2,
+    AGENCY_UNDEFINED           = 3,
+};
 
 void printMainMenu();
 void printEmployeeOption();

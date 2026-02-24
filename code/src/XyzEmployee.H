@@ -1,6 +1,8 @@
 #ifndef XYZEMPLOYEEIMPL_H
 #define XYZEMPLOYEEIMPL_H
 
+#include "string.h"
+
 class XyzEmployee :: public XyzEmployeeIF
 {
     protected:
@@ -15,7 +17,16 @@ class XyzEmployee :: public XyzEmployeeIF
     std::string mDateOfLeaving;
 
     public:
-    XyzEmployee();
+    XyzEmployee(string empNameParam,
+                string empGenderParm, 
+                string empTypeParm, 
+                EmployeeType empTypeParm, 
+                string empIdParm, 
+                EmployeeStatus empStatusParam,
+                string DateOfBirthParm,
+                string DateOfJoiningParm,
+                string DateOfLeavingParm);
+                
     ~XyzEmployee();
     std::string getEmployeeName();
     std::string getEmployeeGender();
