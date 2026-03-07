@@ -3,40 +3,35 @@
 
 
 
-XyzContractEmployee::XyzContractEmployee(string empNameParam,
-                                        string empGenderParm, 
-                                        EmployeeType empTypeParm, 
-                                        string empIdParm, 
-                                        EmployeeStatus empStatusParam,
-                                        string DateOfBirthParm,
-                                        string DateOfJoiningParm,
-                                        string DateOfLeavingParm,
-                                        ExternalAgency extAgencyParm)
-:XyzEmployee(empNameParam
-            ,empGenderParm
-            ,empTypeParm
-            ,empIdParm
-            ,empStatusParam
-            ,DateOfBirthParm
-            ,DateOfJoiningParm
-            ,DateOfLeavingParm)
-,mExtAgency(extAgencyParm)
+XyzContractEmployee::XyzContractEmployee(unsigned int idParm):XyzEmployee(idParm, CONTRACT)
 {
     std::cout << "XyzContractEmployee Constructor called\n";
+    //TODO: generate agency 
+    //mExtAgency = 
 }
 
 
-XyzContractEmployee:: ~XyzContractEmployee()
-{
-
-}
-
-ExternalAgency XyzContractEmployee::getEmpExternalAgency()
+ExternalAgency XyzContractEmployee::getExternalAgency()
 {
     return mExtAgency;
 }
 
-void XyzContractEmployee::getEmpExternalAgency(ExternalAgency externalAgencyParm)
+void XyzContractEmployee::setExternalAgency(ExternalAgency externalAgencyParm)
 {
     mExtAgency = externalAgencyParm;
 }
+
+
+ostream &  XyzContractEmployee::print(ostream & out)
+{
+    XyzEmployee::print(out);
+
+    if(RESIGNED == getEmployeeStatus())
+    {
+        return out;
+    }
+    out << "Agency Name\t: " << getExternalAgency() << "\n";
+
+    return out;
+}
+

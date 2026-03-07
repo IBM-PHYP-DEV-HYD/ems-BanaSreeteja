@@ -2,8 +2,10 @@
 #define XYZCONTRACTEMPLOYEE_H
 
 #include "Utility.H"
+#include "XyzEmployee.H"
+using namespace std;
 
-class XyzContractEmployee :: public XyzEmployee
+class XyzContractEmployee:public XyzEmployee
 {
     private:
 
@@ -12,20 +14,13 @@ class XyzContractEmployee :: public XyzEmployee
         
     public:
 
-        XyzContractEmployee(string empNameParam,
-                            string empGenderParm, 
-                            EmployeeType empTypeParm, 
-                            string empIdParm, 
-                            EmployeeStatus empStatusParam,
-                            string DateOfBirthParm,
-                            string DateOfJoiningParm,
-                            string DateOfLeavingParm,
-                            ExternalAgency extAgencyParm);
+        XyzContractEmployee(unsigned int);
+        
+        ostream & print(ostream &);
+		// ostream & print(ostream &, unsigned int);
 
-        ~XyzContractEmployee();
-
-        ExternalAgency getEmpExternalAgency();
-        void getEmpExternalAgency(ExternalAgency externalAgencyParm);
+        ExternalAgency getExternalAgency();
+        void setExternalAgency(ExternalAgency externalAgencyParm);
         
 };
 

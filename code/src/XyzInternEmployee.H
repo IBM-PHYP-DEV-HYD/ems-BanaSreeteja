@@ -1,36 +1,36 @@
 #ifndef XYZINTERNEMPLOYEE_H
 #define XYZINTERNEMPLOYEE_H
 
-class XyzInternEmployee :: public XyzEmployee
+#include <string>
+#include "XyzEmployee.H"
+
+using namespace std;
+
+class XyzInternEmployee:public XyzEmployee
 {
 
     private:
-        HiringFromColleges mHiringClg;
-        HiringFromBranches mHiringBranch;
+        string mHiringClg;
+        string mHiringBranch;
 
 
     public:
 
-        XyzInternEmployee(string empNameParam,
-                string empGenderParm, 
-                EmployeeType empTypeParm, 
-                string empIdParm, 
-                EmployeeStatus empStatusParam,
-                string DateOfBirthParm,
-                string DateOfJoiningParm,
-                string DateOfLeavingParm,
-                HiringFromColleges HiringClgParm,
-                HiringFromBranches HiringBranchParm);
+        XyzInternEmployee(unsigned int);
                 
         ~XyzInternEmployee();
 
-        HiringFromColleges getCollege();
-        HiringFromBranches getBranch();
+        string getCollege();
+        string getBranch();
         
-        void setCollege(HiringFromColleges collegeParm);
-        void setBranch(HiringFromBranches branchParm);
+
+        void setCollege(string collegeParm);
+        void setBranch(string branchParm);
 
 
+        ostream & print(ostream &);
+		// ostream & print(ostream &, unsigned int);
+        
 };
 
 #endif

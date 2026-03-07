@@ -1,23 +1,10 @@
 #include "XyzEmployee.H"
 
-XyzEmployee::XyzEmployee(string empNameParam,
-                        string empGenderParm, 
-                        string empTypeParm,  
-                        string empIdParm, 
-                        EmployeeStatus empStatusParam,
-                        string DateOfBirthParm,
-                        string DateOfJoiningParm,
-                        string DateOfLeavingParm)
-:mEmployeeName(empNameParam)
-,mEmployeeGender(empGenderParm)
-,mEmployeeType(empTypeParm)
-,mEmployeeId(empIdParm)
-,mEmployeeStatus(empStatusParam)
-,mDateOfBirth(DateOfBirthParm)
-,mDateOfJoining(DateOfJoiningParm)
-,mDateOfLeaving(DateOfLeavingParm)
+XyzEmployee::XyzEmployee(unsigned int idParm, unsigned int employeeTypeParm)
 {
     std::cout << " XyzEmployee Constructor called \n";
+    mEmployeeType = employeeTypeParm;
+    
 }
 
 
@@ -31,7 +18,7 @@ string XyzEmployee::getEmployeeName()
     return mEmployeeName;
 }
 
-string XyzEmployee::getEmployeeGender()
+EmpGender XyzEmployee::getEmployeeGender()
 {
     return mEmployeeGender;
 }
@@ -64,4 +51,79 @@ string XyzEmployee::getDOB()
 string XyzEmployee::getDOL()
 {
     return mDateOfLeaving;
+}
+
+unsigned int XyzEmployee::getTotalLeaves()
+{
+    return 0;
+}
+
+void XyzEmployee::setTotalLeaves(unsigned int totalLeavesParm)
+{
+    
+}
+
+unsigned int XyzEmployee::getAvailedLeaves()
+{
+    return 0;
+}
+
+void XyzEmployee::setAvailedLeaves(unsigned int availedLeavesParm)
+{
+
+}
+
+string XyzEmployee::getAgencyName()
+{
+    return "";
+}
+
+void XyzEmployee::setAgencyName(string agencyNameParm)
+{
+
+}
+
+
+string XyzEmployee::getCollegeName()
+{
+    return "";
+}
+
+string XyzEmployee::getBranchName()
+{
+    return "";
+}
+
+void XyzEmployee::setCollegeName(string clgNameParm)
+{
+
+}
+
+void XyzEmployee::setBranchName(string BranchParm)
+{
+
+}
+
+ostream& XyzEmployee::print(ostream &out)
+{
+    // prints common employee details 
+    out << "XyzEmployee print function" << endl;
+
+	out << "Name\t\t: " << mEmployeeName << endl;
+	out << "ID\t\t: " << mEmployeeId << endl;
+
+	if(mEmployeeType == FULL_TIME) out << "Type\t\t: " << "FULLTIMER" << endl;
+	else if(mEmployeeType == CONTRACT) out << "Type\t\t: " << "CONTRACTOR" << endl;
+	else if(mEmployeeType == INTERN) out << "Type\t\t: " << "INTERN" << endl;
+
+	if(mEmployeeStatus == ACTIVE) out << "Status\t\t: ACTIVE" << endl;
+	else if(mEmployeeStatus == INACTIVE) out << "Status\t\t: INACTIVE" << endl;
+	else if(mEmployeeStatus == RESIGNED) out << "Status\t\t: RESIGNED" << endl;
+
+	if(mEmployeeGender == MALE) out << "Gender\t\t: MALE" << endl;
+	else if(mEmployeeGender == FEMALE) out << "Gender\t\t: FEMALE" << endl;
+
+	out << "DOB\t\t: " << mDateOfBirth << endl;
+	out << "DOJ\t\t: " << mDateOfJoining << endl;
+	return out;
 }

@@ -3,30 +3,12 @@
 
 
 
-XyzFullTimeEmployee::XyzFullTimeEmployee(string empNameParam,
-                                        string empGenderParm, 
-                                        string empTypeParm, 
-                                        EmployeeType empTypeParm, 
-                                        string empIdParm, 
-                                        EmployeeStatus empStatusParam,
-                                        string DateOfBirthParm,
-                                        string DateOfJoiningParm,
-                                        string DateOfLeavingParm,
-                                        int leavesAvailedParm,
-                                        int leavesLeftParm)
-:XyzEmployee(empNameParam
-            ,empGenderParm
-            ,empTypeParm
-            ,empIdParm
-            ,empStatusParam
-            ,DateOfBirthParm
-            ,DateOfJoiningParm
-            ,DateOfLeavingParm)
-,mLeavesAvailed(leavesAvailedParm)
-,mLeavesLeft(leavesLeftParm)
-
+XyzFullTimeEmployee::XyzFullTimeEmployee(unsigned int idParm):XyzEmployee(idParm, FULL_TIME)
 {
-    std::cout << "XyzFullTimeEmployee constructor called \n";
+    std::cout << "XyzFullTimeEmployee constructor \n";
+    mTotalLeaves = EMP_TOTAL_LEAVES;
+    //generate random leaves availed 
+    // mLeavesAvailed = 
 }
 
 XyzFullTimeEmployee::~XyzFullTimeEmployee()
@@ -34,13 +16,44 @@ XyzFullTimeEmployee::~XyzFullTimeEmployee()
     std::cout << "XyzFullTimeEmployee destructor called \n";
 }
 
-XyzFullTimeEmployee::getEmpLeavesAvailed()
+unsigned int XyzFullTimeEmployee::getAvailedLeaves()
 {
     return mLeavesAvailed;
 }
 
-XyzFullTimeEmployee::getEmpLeavesLeft()
+unsigned int XyzFullTimeEmployee::getTotalLeaves()
 {
-    return mLeavesLeft;
+    return mTotalLeaves;
 }
 
+void XyzFullTimeEmployee:: setTotalLeaves(unsigned int totalLeavesParm)
+{
+    mTotalLeaves = totalLeavesParm;
+}
+
+void XyzFullTimeEmployee:: setAvailedLeaves(unsigned int leavesAvailedParm)
+{
+    mLeavesAvailed = leavesAvailedParm;
+}
+
+ostream& XyzFullTimeEmployee::print(ostream &out)
+{
+
+    XyzEmployee::print(out);
+
+    if(RESIGNED == getEmployeeStatus())
+    {
+        return out;
+    }
+
+    out << "Total Leaves\t: " << getTotalLeaves() << "\n";
+    out << "Availed Leaves\t: " << getAvailedLeaves() << "\n";
+
+    return out;
+}
+
+// ostream & XyzFullTimeEmployee::print(ostream &)(ostream & out, unsigned int)
+// {
+
+
+// }

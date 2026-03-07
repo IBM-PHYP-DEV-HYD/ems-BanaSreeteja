@@ -1,42 +1,55 @@
 #ifndef XYZEMPLOYEEIMPL_H
 #define XYZEMPLOYEEIMPL_H
 
-#include "string.h"
+#include <string>
+#include "XyzEmployeeIF.H"
 
-class XyzEmployee :: public XyzEmployeeIF
+using namespace std;
+
+class XyzEmployee:public XyzEmployeeIF
 {
     private:
 
-    std::string mEmployeeName;
-    std::string mEmployeeGender;
+    string mEmployeeName;  
+    EmpGender mEmployeeGender;
+    string mEmployeeId;
+    string mDateOfBirth;
+    string mDateOfJoining;
+    string mDateOfLeaving;
+
     EmployeeType mEmployeeType;
-    std::String mEmployeeId;
     EmployeeStatus mEmployeeStatus;
-    std::string mDateOfBirth;
-    std::string mDateOfJoining;
-    std::string mDateOfLeaving;
+    
 
     public:
-    XyzEmployee(string empNameParam,
-                string empGenderParm, 
-                string empTypeParm, 
-                EmployeeType empTypeParm, 
-                string empIdParm, 
-                EmployeeStatus empStatusParam,
-                string DateOfBirthParm,
-                string DateOfJoiningParm,
-                string DateOfLeavingParm);
-                
-    ~XyzEmployee();
-    std::string getEmployeeName override;
-    std::string getEmployeeGender override;
-    std::string getEmployeeId override;
-    EmployeeType getEmployeeType override;
-    EmployeeStatus getEmployeeStatus override;
-    std::string getDOJ override;
-    std::string getDOB override;
-    std::string getDOL override;
 
-}
+    XyzEmployee(unsigned int, unsigned int);
+
+    ~XyzEmployee();
+    string getEmployeeName();
+    EmpGender getEmployeeGender();
+    string getEmployeeId();
+    EmployeeType getEmployeeType();
+    EmployeeStatus getEmployeeStatus();
+    string getDOJ();
+    string getDOB();
+    string getDOL();
+
+    virtual unsigned int getTotalLeaves();
+	virtual void setTotalLeaves(unsigned int);
+	virtual unsigned int getAvailedLeaves();
+	virtual void setAvailedLeaves(unsigned int);
+
+	virtual string getAgencyName();
+	virtual void setAgencyName(string);
+	
+	virtual string getCollegeName();
+	virtual string getBranchName();
+	virtual void setCollegeName(string);
+	virtual void setBranchName(string);
+	virtual ostream & print(ostream &);
+	// virtual ostream & print(ostream &, unsigned int);
+
+};
 
 #endif

@@ -1,31 +1,30 @@
 #ifndef XYZFULLTIMEEMPLOYEE_H
 #define XYZFULLTIMEEMPLOYEE_H
 
-class XyzFullTimeEmployee :: public XyzEmployee
+#include <string>
+#include "XyzEmployee.H"
+
+using namespace std;
+
+class XyzFullTimeEmployee:public XyzEmployee
 {
     private:
         int mLeavesAvailed;
-        int mLeavesLeft;
+        int mTotalLeaves;
 
     public:
     
-    XyzFullTimeEmployee(string empNameParam,
-                    string empGenderParm, 
-                    EmployeeType empTypeParm, 
-                    string empIdParm, 
-                    EmployeeStatus empStatusParam,
-                    string DateOfBirthParm,
-                    string DateOfJoiningParm,
-                    string DateOfLeavingParm,
-                    int leavesAvailedParm,
-                    int leavesLeftParm);
+    XyzFullTimeEmployee(unsigned int);
 
     ~XyzFullTimeEmployee();
     
 
-    void setLeavesDetails(int leavesAvailedParm);
-    int getEmpLeavesAvailed();
-    int getEmpLeavesLeft();
+    unsigned int getTotalLeaves();
+    unsigned int getAvailedLeaves();
+    void setTotalLeaves(unsigned int);
+    void setAvailedLeaves(unsigned int);
+    ostream & print(ostream &);
+    // ostream & print(ostream &, unsigned int);
     
 
 };
