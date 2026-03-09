@@ -11,14 +11,14 @@ class XyzEmployee:public XyzEmployeeIF
     private:
 
     string mEmployeeName;  
-    EmpGender mEmployeeGender;
     string mEmployeeId;
     string mDateOfBirth;
     string mDateOfJoining;
     string mDateOfLeaving;
-
-    EmployeeType mEmployeeType;
-    EmployeeStatus mEmployeeStatus;
+    
+    unsigned int mEmployeeGender;
+    unsigned int mEmployeeType;
+    unsigned int mEmployeeStatus;
     
 
     public:
@@ -27,10 +27,10 @@ class XyzEmployee:public XyzEmployeeIF
 
     ~XyzEmployee();
     string getEmployeeName();
-    EmpGender getEmployeeGender();
     string getEmployeeId();
-    EmployeeType getEmployeeType();
-    EmployeeStatus getEmployeeStatus();
+    unsigned int getEmployeeGender();
+    unsigned int getEmployeeType();
+    unsigned int getEmployeeStatus();
     string getDOJ();
     string getDOB();
     string getDOL();
@@ -47,7 +47,7 @@ class XyzEmployee:public XyzEmployeeIF
 	virtual string getBranchName();
 	virtual void setCollegeName(string);
 	virtual void setBranchName(string);
-	virtual ostream & print(ostream &);
+	// virtual ostream & print(ostream &);
 	// virtual ostream & print(ostream &, unsigned int);
 
 };

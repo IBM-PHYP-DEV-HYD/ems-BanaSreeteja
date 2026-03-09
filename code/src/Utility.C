@@ -82,8 +82,7 @@ unsigned int chooseAddEmpOption()
     sChoice = safeInput<int>("Your Choice");
     if(sChoice == ADD_RANDOM_EMPLOYEE)
     {
-        //@Todo
-        
+        return EmpRandDataGen::getRandomEmpType();
     }
     else if(sChoice == ADD_SPECIFIC_EMPLOYEE)
     {
@@ -123,7 +122,7 @@ unsigned int chooseOthersMenuOption()
 }
 
 template <typename T>
-T safeInput(const std::string& promptMsg)
+T safeInput(const string& promptMsg)
 {
     T value;
     bool isValid = false;
@@ -147,13 +146,13 @@ T safeInput(const std::string& promptMsg)
 
 
 
-using EmpRandDataGen
+namespace EmpRandDataGen
 {
     int getRandomNumber(int startNumParm, int endNumParm)
     {
-        std::random_device sRandomDevice;
-        std::mt19937 sRandomNumberGenerator(sRandomDevice());
-        std::uniform_int_distribution<int> sGenerate(startNumParm, endNumParm);
+        random_device sRandomDevice;
+        mt19937 sRandomNumberGenerator(sRandomDevice());
+        uniform_int_distribution<int> sGenerate(startNumParm, endNumParm);
         int sRandomNumber = sGenerate(sRandomNumberGenerator);
         return sRandomNumber;
     }
@@ -164,7 +163,7 @@ using EmpRandDataGen
         sName += " ";
         sName += last_names[employeeGenderParm-1][getRandomNumber(0,NUM_NAMES)];
         cout << "Name : " << sName << "\n";
-        return name;
+        return sName;
     }
 
     int getRandomEmpGender()
@@ -192,7 +191,36 @@ using EmpRandDataGen
         return BRANCH_NAMES[getRandomNumber(0,sizeof(BRANCH_NAMES))];
     }
 
-    
+    string getRandomEmpId(unsigned int idParm, int empTypeParm)
+    {
+        // Xyz+ Id + Employeetype
+        string sType = "\0";
+        if(empTypeParm == FULL_TIME)
+        {
+            sType = "F";
+        }
+        else if(empTypeParm == CONTRACT)
+        {
+            sType = "C";
+        }
+        else if(empTypeParm == INTERN)
+        {
+            sType = "I";
+        }
+
+        return "Xyz"+ to_string(idParm) + sType;
+    }
+
+    int getRandomEmpStatus()
+    {
+        return getRandomNumber(1,3);
+    }
+
+    string getRandomEmpDob()
+    {
+        return "";
+    }
+
 }
 
 

@@ -2,15 +2,21 @@
 
 XyzEmployee::XyzEmployee(unsigned int idParm, unsigned int employeeTypeParm)
 {
-    std::cout << " XyzEmployee Constructor called \n";
+    cout << " XyzEmployee Constructor called \n";
     mEmployeeType = employeeTypeParm;
-    
+
+    // mEmployeeName = EmpRandDataGen::getRandomEmpName();  
+    // mEmployeeGender = EmpRandDataGen::getRandomEmpGender();
+    // mEmployeeId = EmpRandDataGen::getRandomEmpId();
+    // mDateOfBirth = EmpRandDataGen::getRandomEmpDob();
+    // mDateOfJoining = EmpRandDataGen::getRandomEmpDoJ();
+    // mEmployeeStatus = EmpRandDataGen::getRandomEmpStatus();
 }
 
 
 XyzEmployee::~XyzEmployee()
 {
-    std::cout << " XyzEmployee Destructor called \n";
+    cout << " XyzEmployee Destructor called \n";
 }
 
 string XyzEmployee::getEmployeeName()
@@ -18,7 +24,7 @@ string XyzEmployee::getEmployeeName()
     return mEmployeeName;
 }
 
-EmpGender XyzEmployee::getEmployeeGender()
+unsigned int XyzEmployee::getEmployeeGender()
 {
     return mEmployeeGender;
 }
@@ -28,12 +34,12 @@ string XyzEmployee::getEmployeeId()
     return mEmployeeId;
 }
 
-EmployeeType XyzEmployee::getEmployeeType()
+unsigned int XyzEmployee::getEmployeeType()
 {
     return mEmployeeType;
 }
 
-EmployeeStatus XyzEmployee::getEmployeeStatus()
+unsigned int XyzEmployee::getEmployeeStatus()
 {
     return mEmployeeStatus;
 }
@@ -104,26 +110,26 @@ void XyzEmployee::setBranchName(string BranchParm)
 
 }
 
-ostream& XyzEmployee::print(ostream &out)
-{
-    // prints common employee details 
-    out << "XyzEmployee print function" << endl;
+// ostream& XyzEmployee::print(ostream &out)
+// {
+//     // prints common employee details 
+//     out << "XyzEmployee print function" << endl;
 
-	out << "Name\t\t: " << mEmployeeName << endl;
-	out << "ID\t\t: " << mEmployeeId << endl;
+// 	out << "Name\t\t: " << mEmployeeName << endl;
+// 	out << "ID\t\t: " << mEmployeeId << endl;
 
-	if(mEmployeeType == FULL_TIME) out << "Type\t\t: " << "FULLTIMER" << endl;
-	else if(mEmployeeType == CONTRACT) out << "Type\t\t: " << "CONTRACTOR" << endl;
-	else if(mEmployeeType == INTERN) out << "Type\t\t: " << "INTERN" << endl;
+// 	if(mEmployeeType == FULL_TIME) out << "Type\t\t: " << "FULLTIMER" << endl;
+// 	else if(mEmployeeType == CONTRACT) out << "Type\t\t: " << "CONTRACTOR" << endl;
+// 	else if(mEmployeeType == INTERN) out << "Type\t\t: " << "INTERN" << endl;
 
-	if(mEmployeeStatus == ACTIVE) out << "Status\t\t: ACTIVE" << endl;
-	else if(mEmployeeStatus == INACTIVE) out << "Status\t\t: INACTIVE" << endl;
-	else if(mEmployeeStatus == RESIGNED) out << "Status\t\t: RESIGNED" << endl;
+// 	if(mEmployeeStatus == ACTIVE) out << "Status\t\t: ACTIVE" << endl;
+// 	else if(mEmployeeStatus == INACTIVE) out << "Status\t\t: INACTIVE" << endl;
+// 	else if(mEmployeeStatus == RESIGNED) out << "Status\t\t: RESIGNED" << endl;
 
-	if(mEmployeeGender == MALE) out << "Gender\t\t: MALE" << endl;
-	else if(mEmployeeGender == FEMALE) out << "Gender\t\t: FEMALE" << endl;
+// 	if(mEmployeeGender == MALE) out << "Gender\t\t: MALE" << endl;
+// 	else if(mEmployeeGender == FEMALE) out << "Gender\t\t: FEMALE" << endl;
 
-	out << "DOB\t\t: " << mDateOfBirth << endl;
-	out << "DOJ\t\t: " << mDateOfJoining << endl;
-	return out;
-}
+// 	out << "DOB\t\t: " << mDateOfBirth << endl;
+// 	out << "DOJ\t\t: " << mDateOfJoining << endl;
+// 	return out;
+// }

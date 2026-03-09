@@ -23,7 +23,7 @@ class XyzFullTimeEmployee:public XyzEmployee
     unsigned int getAvailedLeaves();
     void setTotalLeaves(unsigned int);
     void setAvailedLeaves(unsigned int);
-    ostream & print(ostream &);
+    // ostream & print(ostream &);
     // ostream & print(ostream &, unsigned int);
     
 

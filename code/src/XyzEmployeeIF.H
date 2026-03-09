@@ -9,10 +9,12 @@ class XyzEmployeeIF
 {
     public:
     virtual string getEmployeeName() = 0;
-    virtual EmpGender getEmployeeGender() = 0;
     virtual string getEmployeeId() = 0;
-    virtual EmployeeType getEmployeeType() = 0;
-    virtual EmployeeStatus getEmployeeStatus() = 0;
+
+    virtual unsigned int getEmployeeGender() = 0;
+    virtual unsigned int getEmployeeType() = 0;
+    virtual unsigned int getEmployeeStatus() = 0;
+    
     virtual string getDOJ() = 0;
     virtual string getDOB() = 0;
     virtual string getDOL() = 0;
@@ -30,7 +32,7 @@ class XyzEmployeeIF
 	virtual void setCollegeName(string) = 0;
 	virtual void setBranchName(string) = 0;
 
-	virtual ostream & print(ostream &) = 0;
+	// virtual ostream & print(ostream &) = 0;
     
 };
 

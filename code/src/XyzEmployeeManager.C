@@ -17,7 +17,7 @@ XyzEmployeeManager::~XyzEmployeeManager()
 void XyzEmployeeManager::pAddFullTimeEmployee()
 {
     XyzEmployeeIF* sNewEmp = new XyzFullTimeEmployee(mEmpIdCounter);
-    EmployeeStatus sEmpStatus = sNewEmp->getEmployeeStatus();
+    unsigned int sEmpStatus = sNewEmp->getEmployeeStatus();
 
     if(sEmpStatus == ACTIVE || sEmpStatus == INACTIVE)
     {
@@ -35,7 +35,7 @@ void XyzEmployeeManager::pAddFullTimeEmployee()
 void XyzEmployeeManager::pAddContractEmployee()
 {
     XyzEmployeeIF* sNewEmp = new XyzContractEmployee(mEmpIdCounter);
-    EmployeeStatus sEmpStatus = sNewEmp->getEmployeeStatus();
+    unsigned int sEmpStatus = sNewEmp->getEmployeeStatus();
 
     if(sEmpStatus == ACTIVE || sEmpStatus == INACTIVE)
     {
@@ -52,7 +52,7 @@ void XyzEmployeeManager::pAddContractEmployee()
 void XyzEmployeeManager::pAddInternEmployee()
 {
     XyzEmployeeIF* sNewEmp = new XyzInternEmployee(mEmpIdCounter);
-    EmployeeStatus sEmpStatus = sNewEmp->getEmployeeStatus();
+    unsigned int sEmpStatus = sNewEmp->getEmployeeStatus();
 
     if(sEmpStatus == ACTIVE || sEmpStatus == INACTIVE)
     {
@@ -70,11 +70,12 @@ void XyzEmployeeManager::pAddInternEmployee()
 
 void XyzEmployeeManager::processEmployees()
 {
-    while(1)
+    bool sRun = true;
+    while(sRun)
     {
         printMainMenu();
         int sChoice = 0;
-        std::cin >> sChoice;
+        cin >> sChoice;
         switch(sChoice)
         {
             case MainMenu::ADD_EMPLOYEE:
@@ -92,12 +93,14 @@ void XyzEmployeeManager::processEmployees()
                     case EmployeeType::CONTRACT:
                     {
                         // add contract employee
+                        pAddContractEmployee();
                         break;
                     }
 
                     case EmployeeType::INTERN:
                     {
                         // add intern 
+                        pAddInternEmployee();
                         break;
                     }
 
@@ -106,37 +109,150 @@ void XyzEmployeeManager::processEmployees()
                 }
                 break;
             }
+            
+            case MainMenu::ADD_MULTIPLE_RANDOM_EMPLOYEES:
+            {
+                pAddRandomMultipleEmployees();
+                break;
+            }
 
             case MainMenu::REMOVE_EMPLOYEE:
             {
-
+                unsigned int sEmployeeID;
+                sEmployeeID = safeInput<unsigned int>("Employee ID: ");
+                removeEmployee(sEmployeeID);
                 break;
             }
 
             case MainMenu::PRINT_EMPLOYEE:
             {
+                unsigned int sEmpChoice = chooseXyzEmpSummaryOption();
+                unsigned int sEmployeeID;
+                if(sEmpChoice == EmployeeDetailsMenuChoice::ByID)
+                {
+                    // print employee details as per employee ID
+                    sEmployeeID = safeInput<unsigned int>("Employee ID: ");
+
+                }
+                else
+                {
+                    // print employee details
+
+                }
 
                 break;
             }
 
             case MainMenu::OTHERS:
             {
+                unsigned int sChoice = chooseOthersMenuOption();
+                if(sChoice == ADD_LEAVES)
+                {
+                    addLeavesForFullTimers();
+                }
+                else if (sChoice == CONVERT_INTERN)
+                {
+                    convertInternToFulltimer();
+                }
+                else if (sChoice == SEARCH_BY_ID)
+                {
 
+                }
+                else if (sChoice == SEARCH_BY_NAME)
+                {
+
+                }
+                else
+                {
+                    
+                }
                 break;
             }
 
             case MainMenu::EXIT:
             {
-
+                sRun = false;
                 break;
             }
 
             default:
             {
-                std::cout << "Invaluid choice\n";
+                cout << "Invaluid choice! Try again. \n";
                 break;
             }
         }
     }
 
 }
+
+EDLL<XyzEmployeeIF*> * XyzEmployeeManager::getActInactEmpDeque() 
+{
+    return mActiveInactiveEmpDeue;
+}
+
+EDLL<XyzEmployeeIF*> * XyzEmployeeManager::getResignedEmpDeque() 
+{
+    return mResignedEmpDeque;
+}
+
+void XyzEmployeeManager::removeEmployee(unsigned int idParm)
+{
+
+}
+
+void XyzEmployeeManager::convertInternToFulltimer(unsigned int)
+{
+
+}
+
+void XyzEmployeeManager::pAddRandomMultipleEmployees()
+{
+    int sRandomEmployeeCount = safeInput<int>("Random Employee count\n");
+
+    for(int index = 1; index <= sRandomEmployeeCount ; index++)
+    {
+        unsigned int sEmpType = EmpRandDataGen::getRandomEmpType();
+        if(sEmpType == FULL_TIME)
+        {
+            // add full time employee
+            pAddFullTimeEmployee();
+        }
+        else if(sEmpType == CONTRACT)
+        {
+            // add contract employee
+            pAddContractEmployee();
+        }
+        else if(sEmpType == INTERN)
+        {
+            // add intern 
+            pAddInternEmployee();
+        }
+    }
+}
+
+
+void XyzEmployeeManager::addLeavesForFullTimers(unsigned int )
+{
+
+
+}
+
+void XyzEmployeeManager:: printEmpsInfo(unsigned int)
+{
+    
+
+}
+
+
+void XyzEmployeeManager:: printEmpInfo(unsigned int)
+{
+
+
+}
+
+void XyzEmployeeManager:: printEmpInfo(string)
+{
+
+
+}
+

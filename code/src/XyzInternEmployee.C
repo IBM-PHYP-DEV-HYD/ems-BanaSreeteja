@@ -4,13 +4,13 @@
 XyzInternEmployee :: XyzInternEmployee(unsigned idParm):XyzEmployee(idParm, INTERN)
 
 {
-    std::cout << "XyzIntern Employee Constructor\n";
+    cout << "XyzIntern Employee Constructor\n";
 
 }
 
 XyzInternEmployee :: ~XyzInternEmployee()
 {
-
+    cout << "XyzIntern Employee Destructor\n";
 }
 
 string XyzInternEmployee::getCollege()
@@ -33,16 +33,16 @@ void XyzInternEmployee::setCollege(string collegeParm)
     mHiringClg = collegeParm;
 }
 
-ostream & XyzInternEmployee::print(ostream & out) 
-{
+// ostream & XyzInternEmployee::print(ostream & out) 
+// {
 
-	XyzEmployee::print(out);
-	if(RESIGNED == getEmployeeStatus())
-    {
-		return out;
-    }
-	out << "College Name\t\t: " << getCollege() << "\n";
-	out << "Branch Name\t\t: " << getBranch() << "\n";
+// 	XyzEmployee::print(out);
+// 	if(RESIGNED == getEmployeeStatus())
+//     {
+// 		return out;
+//     }
+// 	out << "College Name\t\t: " << getCollege() << "\n";
+// 	out << "Branch Name\t\t: " << getBranch() << "\n";
     
-	return out;
-}
+// 	return out;
+// }

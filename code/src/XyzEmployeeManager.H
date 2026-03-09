@@ -21,14 +21,23 @@ class XyzEmployeeManager
     void pAddFullTimeEmployee();
     void pAddInternEmployee();
     void pAddContractEmployee();
-
+    void pAddRandomMultipleEmployees();
+    
     public:
-        XyzEmployeeManager();
-        ~XyzEmployeeManager();
+    XyzEmployeeManager();
+    ~XyzEmployeeManager();
+    
+    void processEmployees();
+    void removeEmployee(unsigned int);
+    EDLL<XyzEmployeeIF*> * getResignedEmpDeque();
 
-        void processEmployees();
 
+    void printEmpsInfo(unsigned int);
+    void printEmpInfo(unsigned int);
+    void printEmpInfo(string);
 
+    void convertInternToFulltimer(unsigned int);
+    void addLeavesForFullTimers(unsigned int);
 };
 
 #endif

@@ -16,7 +16,7 @@ void Edll<T>::insertAtMiddle(int indexParm, const T& dataParm)
 {
     if(indexParm < 0 || indexParm > this->mCount)
     {
-        std::cout << "Out of range\n"; 
+        cout << "Out of range\n"; 
         return;
     }
     // insert at front
@@ -52,7 +52,7 @@ void Edll<T>::removeAtMiddle(int indexParm)
 {
     if (indexParm < 0 || indexParm >= this->mCount)
     {
-        std::cout << "Out of range\n"; 
+        cout << "Out of range\n"; 
         return;
     }
 

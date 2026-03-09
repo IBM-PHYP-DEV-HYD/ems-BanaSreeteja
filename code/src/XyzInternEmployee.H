@@ -28,7 +28,7 @@ class XyzInternEmployee:public XyzEmployee
         void setBranch(string branchParm);
 
 
-        ostream & print(ostream &);
+        // ostream & print(ostream &);
 		// ostream & print(ostream &, unsigned int);
         
 };

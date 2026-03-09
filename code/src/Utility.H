@@ -10,7 +10,6 @@
 
 using namespace std;
 
-#define EMP_TOTAL_LEAVES        22
 #define NUM_NAMES               3
 
 
@@ -32,11 +31,12 @@ enum EmployeeStatus
 
 enum MainMenu
 {
-    ADD_EMPLOYEE       = 1,
-    REMOVE_EMPLOYEE    = 2,
-    PRINT_EMPLOYEE     = 3,
-    OTHERS             = 4,
-    EXIT               = -1
+    ADD_EMPLOYEE                    = 1,
+    ADD_MULTIPLE_RANDOM_EMPLOYEES   = 2,
+    REMOVE_EMPLOYEE                 = 3,
+    PRINT_EMPLOYEE                  = 4,
+    OTHERS                          = 5,
+    EXIT                            = -1
 };
 
 enum HiringFromColleges
@@ -79,8 +79,35 @@ enum EmpGender
 	FEMALE,
 };
 
+
+enum EmployeeDetailsMenuChoice
+{
+    AllEmployees    = 1,
+    ByType          = 2,
+    ByGender        = 3,
+    ByStatus        = 4,
+    ByID            = 5,
+
+};
+
+enum OtherMenuChoice
+{
+    ADD_LEAVES        = 1,
+    CONVERT_INTERN    = 2,
+    SEARCH_BY_ID       = 3,
+    SEARCH_BY_NAME     = 4,
+
+};
+
+enum Leaves
+{
+    MINIMUM_LEAVES      = 0,
+    EMP_TOTAL_LEAVES    = 22,
+    INVALID_LEAVES 
+};
+
 template <typename T>
-T safeInput(const std::string& promptMsg);
+T safeInput(const string& promptMsg);
 
 void printMainMenu();
 void printAddEmployeeOption();
@@ -93,15 +120,20 @@ unsigned int chooseXyzEmpSummaryOption();
 unsigned int chooseOthersMenuOption();
 
 
-using EmpRandDataGen
+namespace EmpRandDataGen
 {
 
     int getRandomNumber(int startNumParm, int endNumParm);
     int getRandomEmpGender();
     int getRandomEmpType();
+    int getRandomEmpStatus();
+
+    string getRandomEmpDob();
+    string getRandomEmpDoJ();
+
+    
     string getRandomEmpName(unsigned int employeeGenderParm);
-
-
+    string getRandomEmpId(unsigned int idParm, int empTypeParm);
 
 
     string getRanomEmpAgency();
@@ -110,8 +142,6 @@ using EmpRandDataGen
 
 
 
-
 }
-
 
 #endif

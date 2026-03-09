@@ -16,7 +16,7 @@ class XyzContractEmployee:public XyzEmployee
 
         XyzContractEmployee(unsigned int);
         
-        ostream & print(ostream &);
+        // ostream & print(ostream &);
 		// ostream & print(ostream &, unsigned int);
 
         ExternalAgency getExternalAgency();
