@@ -5,7 +5,8 @@ XyzInternEmployee :: XyzInternEmployee(unsigned idParm):XyzEmployee(idParm, INTE
 
 {
     cout << "XyzIntern Employee Constructor\n";
-
+    mHiringClg = EmpRandDataGen::getRandomEmpCollege();
+    mHiringBranch = EmpRandDataGen::getRandomEmpBranch();
 }
 
 XyzInternEmployee :: ~XyzInternEmployee()

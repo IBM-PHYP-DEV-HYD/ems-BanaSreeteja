@@ -4,6 +4,8 @@
 XyzEmployeeManager::XyzEmployeeManager() : mEmpIdCounter(1)
 {
     cout << "XyzEmployeeManger constructor" << endl;
+    mActiveInactiveEmpDeue = new Edll<XyzEmployeeIF*>();
+    mResignedEmpDeque = new Edll<XyzEmployeeIF*>();
 }
 
 
@@ -127,18 +129,33 @@ void XyzEmployeeManager::processEmployees()
             case MainMenu::PRINT_EMPLOYEE:
             {
                 unsigned int sEmpChoice = chooseXyzEmpSummaryOption();
-                unsigned int sEmployeeID;
                 if(sEmpChoice == EmployeeDetailsMenuChoice::ByID)
                 {
                     // print employee details as per employee ID
-                    sEmployeeID = safeInput<unsigned int>("Employee ID: ");
-
+                    unsigned int sEmployeeID = safeInput<unsigned int>("Employee ID: ");
+                    printEmpInfo(sEmployeeID);
                 }
-                else
+                else if(sEmpChoice == EmployeeDetailsMenuChoice::AllEmployees)
                 {
-                    // print employee details
-
+                    // print all employee details
+                    printEmpsInfo(AllEmployees);
                 }
+                else if(sEmpChoice == EmployeeDetailsMenuChoice::ByGender)
+                {
+                    // print employee details with other filters
+                    printEmpsInfo(sEmpChoice);
+                }
+                else if(sEmpChoice == EmployeeDetailsMenuChoice::ByStatus)
+                {
+                    // print employee details with other filters
+                    printEmpsInfo(sEmpChoice);
+                }
+                else if(sEmpChoice == EmployeeDetailsMenuChoice::ByType)
+                {
+                    // print employee details with other filters
+                    printEmpsInfo(sEmpChoice);
+                }
+
 
                 break;
             }
@@ -148,19 +165,23 @@ void XyzEmployeeManager::processEmployees()
                 unsigned int sChoice = chooseOthersMenuOption();
                 if(sChoice == ADD_LEAVES)
                 {
-                    addLeavesForFullTimers();
+                    unsigned int sEmployeeID = safeInput<unsigned int>("Enter Employee ID: ");
+                    addLeavesForFullTimers(sEmployeeID);
                 }
                 else if (sChoice == CONVERT_INTERN)
                 {
-                    convertInternToFulltimer();
+                    unsigned int sEmployeeID = safeInput<unsigned int>("Enter Employee ID: ");
+                    convertInternToFulltimer(sEmployeeID);
                 }
                 else if (sChoice == SEARCH_BY_ID)
                 {
-
+                    unsigned int sEmployeeID = safeInput<unsigned int>("Enter Employee ID: ");
+                    printEmpInfo(sEmployeeID);
                 }
                 else if (sChoice == SEARCH_BY_NAME)
                 {
-
+                    string sEmployeeName = safeInput<string>("Enter Employee Name: ");
+                    printEmpInfo(sEmployeeName);
                 }
                 else
                 {
@@ -185,24 +206,23 @@ void XyzEmployeeManager::processEmployees()
 
 }
 
-EDLL<XyzEmployeeIF*> * XyzEmployeeManager::getActInactEmpDeque() 
+Edll<XyzEmployeeIF*> * XyzEmployeeManager::getActInactEmpDeque()
 {
     return mActiveInactiveEmpDeue;
 }
 
-EDLL<XyzEmployeeIF*> * XyzEmployeeManager::getResignedEmpDeque() 
+Edll<XyzEmployeeIF*> * XyzEmployeeManager::getResignedEmpDeque()
 {
     return mResignedEmpDeque;
 }
 
 void XyzEmployeeManager::removeEmployee(unsigned int idParm)
 {
-
 }
 
-void XyzEmployeeManager::convertInternToFulltimer(unsigned int)
+void XyzEmployeeManager::convertInternToFulltimer(unsigned int idParm)
 {
-
+  
 }
 
 void XyzEmployeeManager::pAddRandomMultipleEmployees()
@@ -231,28 +251,24 @@ void XyzEmployeeManager::pAddRandomMultipleEmployees()
 }
 
 
-void XyzEmployeeManager::addLeavesForFullTimers(unsigned int )
+void XyzEmployeeManager::addLeavesForFullTimers(unsigned int idParm)
 {
+ }
 
+void XyzEmployeeManager:: printEmpsInfo(unsigned int filterType)
+{
+   }
+
+void XyzEmployeeManager:: printEmpInfo(unsigned int idParm)
+{
+}
+
+void XyzEmployeeManager:: printEmpInfo(string nameParm)
+{
 
 }
 
-void XyzEmployeeManager:: printEmpsInfo(unsigned int)
+void XyzEmployeeManager::printEmployeeDetails(XyzEmployeeIF* empParm)
 {
-    
-
-}
-
-
-void XyzEmployeeManager:: printEmpInfo(unsigned int)
-{
-
-
-}
-
-void XyzEmployeeManager:: printEmpInfo(string)
-{
-
-
 }
 

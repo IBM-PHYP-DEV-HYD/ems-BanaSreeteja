@@ -10,7 +10,10 @@
 
 using namespace std;
 
-#define NUM_NAMES               3
+#define NUM_NAMES                3
+#define NUM_OF_AGENCIES         3
+#define NUM_OF_COLLEGES         7
+#define NUM_OF_BRANCHES         2
 
 
 enum EmployeeType
@@ -107,7 +110,27 @@ enum Leaves
 };
 
 template <typename T>
-T safeInput(const string& promptMsg);
+T safeInput(const string& promptMsg)
+{
+    T value;
+    bool isValid = false;
+    while (!isValid)
+    {
+        cout << promptMsg;
+        cin >> value;
+        if (!cin.fail())
+        {
+            isValid = true;
+        }
+        else
+        {
+            cout << "Invalid input! Try again." << endl;
+        }
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+    return value;
+}
 
 void printMainMenu();
 void printAddEmployeeOption();

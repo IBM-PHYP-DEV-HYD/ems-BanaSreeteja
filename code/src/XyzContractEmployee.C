@@ -6,8 +6,7 @@
 XyzContractEmployee::XyzContractEmployee(unsigned int idParm):XyzEmployee(idParm, CONTRACT)
 {
     cout << "XyzContractEmployee Constructor called\n";
-    //TODO: generate agency 
-    //mExtAgency = 
+    mExtAgency = static_cast<ExternalAgency>(EmpRandDataGen::getRandomNumber(0, NUM_OF_AGENCIES-1));
 }
 
 

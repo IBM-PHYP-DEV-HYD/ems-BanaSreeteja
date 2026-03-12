@@ -22,6 +22,7 @@ class XyzEmployeeManager
     void pAddInternEmployee();
     void pAddContractEmployee();
     void pAddRandomMultipleEmployees();
+    void printEmployeeDetails(XyzEmployeeIF* empParm);
     
     public:
     XyzEmployeeManager();
@@ -29,7 +30,8 @@ class XyzEmployeeManager
     
     void processEmployees();
     void removeEmployee(unsigned int);
-    EDLL<XyzEmployeeIF*> * getResignedEmpDeque();
+    Edll<XyzEmployeeIF*> * getActInactEmpDeque();
+    Edll<XyzEmployeeIF*> * getResignedEmpDeque();
 
 
     void printEmpsInfo(unsigned int);

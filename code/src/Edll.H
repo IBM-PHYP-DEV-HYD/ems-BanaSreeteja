@@ -32,7 +32,7 @@ void Edll<T>::insertAtMiddle(int indexParm, const T& dataParm)
         return;
     }
 
-    Node<T>* sCurrent = this->getFirstElement;
+    Node<T>* sCurrent = this->mHead;
     for (int sIndex = 0; sIndex < indexParm; ++sIndex)
     {
         sCurrent = sCurrent->mNext;
@@ -68,7 +68,7 @@ void Edll<T>::removeAtMiddle(int indexParm)
         return;
     }
 
-    Node<T>* sCurrent = this->getFirstElement;
+    Node<T>* sCurrent = this->mHead;
     for (int sIndex = 0; sIndex < indexParm; ++sIndex)
     {
         sCurrent = sCurrent->mNext;

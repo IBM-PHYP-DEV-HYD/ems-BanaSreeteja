@@ -71,7 +71,7 @@ unsigned int chooseMainMenuChoice()
 {
     unsigned int sChoice;
     printMainMenu();
-    sChoice = safeInput<int>("Your Choice");
+    sChoice = safeInput<int>("Your Choice : ");
     return sChoice;
 } 
 
@@ -79,7 +79,7 @@ unsigned int chooseAddEmpOption()
 {
     unsigned int sChoice;
     printAddEmployeeOption();
-    sChoice = safeInput<int>("Your Choice");
+    sChoice = safeInput<int>("Your Choice : ");
     if(sChoice == ADD_RANDOM_EMPLOYEE)
     {
         return EmpRandDataGen::getRandomEmpType();
@@ -108,7 +108,7 @@ unsigned int chooseXyzEmpSummaryOption()
 {
     unsigned int sChoice;
     printXyzEmpSummaryMenu();
-    sChoice = safeInput<int>("Your Choice");
+    sChoice = safeInput<int>("Your Choice : ");
     //todo
     return sChoice;
 }
@@ -117,33 +117,9 @@ unsigned int chooseOthersMenuOption()
 {
     unsigned int sChoice;
     printOthersMenu();
-    sChoice = safeInput<int>("Your Choice");
+    sChoice = safeInput<int>("Your Choice : ");
     return sChoice;
 }
-
-template <typename T>
-T safeInput(const string& promptMsg)
-{
-    T value;
-    bool isValid = false;
-    while (!isValid)
-    {
-        cout << promptMsg;
-        cin >> value;
-        if (!cin.fail())
-        {
-            isValid = true;
-        }
-        else
-        {
-            cout << "Invalid input! Try again." << endl;
-        }
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    }
-    return value;
-}
-
 
 
 namespace EmpRandDataGen
@@ -159,9 +135,9 @@ namespace EmpRandDataGen
 
     string getRandomEmpName(unsigned int employeeGenderParm)
     {
-        string sName = first_names[employeeGenderParm-1][getRandomNumber(0,NUM_NAMES)];
+        string sName = first_names[employeeGenderParm-1][getRandomNumber(0,NUM_NAMES-1)];
         sName += " ";
-        sName += last_names[employeeGenderParm-1][getRandomNumber(0,NUM_NAMES)];
+        sName += last_names[employeeGenderParm-1][getRandomNumber(0,NUM_NAMES-1)];
         cout << "Name : " << sName << "\n";
         return sName;
     }
@@ -178,17 +154,17 @@ namespace EmpRandDataGen
 
     string getRanomEmpAgency()
     {
-        return AGENCY_NAMES[getRandomNumber(0,sizeof(AGENCY_NAMES))];
+        return AGENCY_NAMES[getRandomNumber(0,2)];
     }
 
     string getRandomEmpCollege()
     {
-        return COLLEGE_NAMES[getRandomNumber(0,sizeof(COLLEGE_NAMES))];
+        return COLLEGE_NAMES[getRandomNumber(0,6)];
     }
 
     string getRandomEmpBranch()
     {
-        return BRANCH_NAMES[getRandomNumber(0,sizeof(BRANCH_NAMES))];
+        return BRANCH_NAMES[getRandomNumber(0,2)];
     }
 
     string getRandomEmpId(unsigned int idParm, int empTypeParm)

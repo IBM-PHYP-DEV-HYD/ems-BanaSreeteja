@@ -7,8 +7,8 @@ XyzFullTimeEmployee::XyzFullTimeEmployee(unsigned int idParm):XyzEmployee(idParm
 {
     cout << "XyzFullTimeEmployee constructor \n";
     mTotalLeaves = EMP_TOTAL_LEAVES;
-    //generate random leaves availed 
-    // mLeavesAvailed = 
+    //generate random leaves availed
+    mLeavesAvailed = EmpRandDataGen::getRandomNumber(0, EMP_TOTAL_LEAVES);
 }
 
 XyzFullTimeEmployee::~XyzFullTimeEmployee()

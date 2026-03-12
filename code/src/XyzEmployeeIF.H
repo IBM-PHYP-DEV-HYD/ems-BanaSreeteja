@@ -8,6 +8,8 @@
 class XyzEmployeeIF
 {
     public:
+    virtual ~XyzEmployeeIF() {}
+    
     virtual string getEmployeeName() = 0;
     virtual string getEmployeeId() = 0;
 
