@@ -1,13 +1,18 @@
 
 #include "Utility.H"
 
-
-
 using namespace std;
 
 
-static string first_names[2][NUM_NAMES] = {{"Sai", "Sri", "Ram"},{"Meena", "Sree", "Sai"}};
-static string last_names[2][NUM_NAMES] = {{"Teja", "Krishna", "Aravind"},{"Lakshmi", "Priya", "sharma"}};
+
+static string first_names[2][NUM_NAMES] = {
+    {"Vijay", "Arun", "Kiran", "Ravi", "Suresh", "Manoj", "Rahul"},
+    {"Meena", "Sree", "Sai", "Priya", "Divya", "Anjali", "Kavya"}
+};
+static string last_names[2][NUM_NAMES] = {
+    {"Kumar", "Reddy", "Sharma", "Patel", "Singh", "Rao", "Gupta"},
+    {"Lakshmi", "Priya", "Sharma", "Reddy", "Devi", "Kumari", "Singh"}
+};
 
 static string AGENCY_NAMES[] = {"Avengers", "Justice League", "X-Men"};
 static string COLLEGE_NAMES[] = {"IIT Delhi", "IIT Mumbai", "IIT Hyderabad", "IIT Kanpur", "NIT Warangal", "NIT Tiruchi", "IIIT Hyderabad"};
@@ -20,9 +25,10 @@ void printMainMenu()
         << "| Choose any below option              |\n"
         << "|--------------------------------------|\n"
         << "| 1. Add an Employee.                  |\n"
-        << "| 2. Remove an employee.               |\n"
-        << "| 3. Employee Details                  |\n"
-        << "| 4. Others.                           |\n"
+        << "| 2. Add n Random employees            |\n"
+        << "| 3. Remove an employee                |\n"
+        << "| 4. Get Employee Details              |\n"
+        << "| 5. Others.                           |\n"
         << "|----------------------------------    |\n"
         << "|      Press -1 to exit                |\n"
         << "|----------------------------------    |\n";
@@ -30,7 +36,8 @@ void printMainMenu()
 
 void printAddEmployeeOption()
 {
-    cout << "|--------------------------------------|\n"
+    cout << "\n"
+         << "|--------------------------------------|\n"
          << "| Choose any option below.             |\n"
          << "|--------------------------------------|\n"
          << "| 1. Add Employee at Random            |\n"
@@ -42,7 +49,8 @@ void printAddEmployeeOption()
 
 void printXyzEmpSummaryMenu()
 {
-   cout  << "--------------------------------------------------\n"
+   cout  << "\n"
+         << "--------------------------------------------------\n"
          << "|             Employee Details Menu              |\n"
          << "--------------------------------------------------\n"
          << "| 1. All Employees Summary                       |\n"
@@ -56,7 +64,8 @@ void printXyzEmpSummaryMenu()
 
 void printOthersMenu()
 {
-    cout << "---------------------------------------------------\n"
+    cout << "\n"
+         << "---------------------------------------------------\n"
          << "|             Other Operations Menu               |\n"
          << "---------------------------------------------------\n"
          << "| 1. Add 'n' Leaves to Full-Time Employees        |\n"
@@ -67,17 +76,17 @@ void printOthersMenu()
          << "---------------------------------------------------\n";
 }
 
-unsigned int chooseMainMenuChoice()
+int chooseMainMenuChoice()
 {
-    unsigned int sChoice;
+    int sChoice;
     printMainMenu();
     sChoice = safeInput<int>("Your Choice : ");
     return sChoice;
 } 
 
-unsigned int chooseAddEmpOption()
+int chooseAddEmpOption()
 {
-    unsigned int sChoice;
+    int sChoice;
     printAddEmployeeOption();
     sChoice = safeInput<int>("Your Choice : ");
     if(sChoice == ADD_RANDOM_EMPLOYEE)
@@ -104,18 +113,18 @@ unsigned int chooseAddEmpOption()
     return sChoice;
 }
 
-unsigned int chooseXyzEmpSummaryOption()
+int chooseXyzEmpSummaryOption()
 {
-    unsigned int sChoice;
+    int sChoice;
     printXyzEmpSummaryMenu();
     sChoice = safeInput<int>("Your Choice : ");
     //todo
     return sChoice;
 }
 
-unsigned int chooseOthersMenuOption()
+int chooseOthersMenuOption()
 {
-    unsigned int sChoice;
+    int sChoice;
     printOthersMenu();
     sChoice = safeInput<int>("Your Choice : ");
     return sChoice;
@@ -138,7 +147,7 @@ namespace EmpRandDataGen
         string sName = first_names[employeeGenderParm-1][getRandomNumber(0,NUM_NAMES-1)];
         sName += " ";
         sName += last_names[employeeGenderParm-1][getRandomNumber(0,NUM_NAMES-1)];
-        cout << "Name : " << sName << "\n";
+        // cout << "Name : " << sName << "\n";
         return sName;
     }
 
@@ -169,7 +178,7 @@ namespace EmpRandDataGen
 
     string getRandomEmpId(unsigned int idParm, int empTypeParm)
     {
-        // Xyz+ Id + Employeetype
+        // Xyz+ Id (4 digits with leading zeros) + Employeetype
         string sType = "\0";
         if(empTypeParm == FULL_TIME)
         {
@@ -184,7 +193,14 @@ namespace EmpRandDataGen
             sType = "I";
         }
 
-        return "Xyz"+ to_string(idParm) + sType;
+        // Pad ID with leading zeros to make it 4 digits
+        string idStr = to_string(idParm);
+        while(idStr.length() < 4)
+        {
+            idStr = "0" + idStr;
+        }
+
+        return "Xyz" + idStr + sType;
     }
 
     int getRandomEmpStatus()
@@ -194,7 +210,29 @@ namespace EmpRandDataGen
 
     string getRandomEmpDob()
     {
-        return "";
+        // 21<=age<=60
+        int year = getRandomNumber(CURRENT_YEAR-60, CURRENT_YEAR-21);
+        int month = getRandomNumber(1, 12);
+        int day = getRandomNumber(1, 28);
+        
+        string sMonth = (month < 10) ? "0" + to_string(month) : to_string(month);
+        string sDay = (day < 10) ? "0" + to_string(day) : to_string(day);
+        
+        return to_string(day) + "/" + sMonth + "/" + to_string(year);
+    }
+
+
+    string getRandomEmpDoJ()
+    {
+        // Generate DOJ between year when employee turns 21 and current year
+        int year = getRandomNumber(2000, CURRENT_YEAR);
+        int month = getRandomNumber(1, 12);
+        int day = getRandomNumber(1, 28);
+        
+        string sMonth = (month < 10) ? "0" + to_string(month) : to_string(month);
+        string sDay = (day < 10) ? "0" + to_string(day) : to_string(day);
+        
+        return to_string(day) + "/" + sMonth + "/" + to_string(year);
     }
 
 }

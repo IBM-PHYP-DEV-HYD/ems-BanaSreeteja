@@ -9,10 +9,10 @@ using namespace std;
 template <typename T>
 class Deque
 {
-    private:
+    protected:
        
         Node<T>* mHead;
-        Node<T>* mTail; 
+        Node<T>* mTail;
         size_t mCount;
 
     public:

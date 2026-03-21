@@ -23,6 +23,9 @@ class XyzEmployeeManager
     void pAddContractEmployee();
     void pAddRandomMultipleEmployees();
     void printEmployeeDetails(XyzEmployeeIF* empParm);
+    void printEmployeeSummary(XyzEmployeeIF* empParm);
+    void printEmployeeTableRow(XyzEmployeeIF* empParm);
+    void printTableHeader();
     
     public:
     XyzEmployeeManager();

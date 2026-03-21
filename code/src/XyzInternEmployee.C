@@ -4,7 +4,7 @@
 XyzInternEmployee :: XyzInternEmployee(unsigned idParm):XyzEmployee(idParm, INTERN)
 
 {
-    cout << "XyzIntern Employee Constructor\n";
+    // cout << "XyzIntern Employee Constructor\n";
     mHiringClg = EmpRandDataGen::getRandomEmpCollege();
     mHiringBranch = EmpRandDataGen::getRandomEmpBranch();
 }
@@ -14,36 +14,22 @@ XyzInternEmployee :: ~XyzInternEmployee()
     cout << "XyzIntern Employee Destructor\n";
 }
 
-string XyzInternEmployee::getCollege()
+string XyzInternEmployee::getCollegeName()
 {
     return mHiringClg;
 }
 
-string XyzInternEmployee::getBranch()
+string XyzInternEmployee::getBranchName()
 {
     return mHiringBranch;
 }
 
-void XyzInternEmployee::setBranch(string branchParm)
+void XyzInternEmployee::setBranchName(string branchParm)
 {
     mHiringBranch = branchParm;
 }
 
-void XyzInternEmployee::setCollege(string collegeParm)
+void XyzInternEmployee::setCollegeName(string collegeParm)
 {
     mHiringClg = collegeParm;
 }
-
-// ostream & XyzInternEmployee::print(ostream & out) 
-// {
-
-// 	XyzEmployee::print(out);
-// 	if(RESIGNED == getEmployeeStatus())
-//     {
-// 		return out;
-//     }
-// 	out << "College Name\t\t: " << getCollege() << "\n";
-// 	out << "Branch Name\t\t: " << getBranch() << "\n";
-    
-// 	return out;
-// }

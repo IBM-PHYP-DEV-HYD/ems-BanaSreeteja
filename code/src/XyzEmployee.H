@@ -47,8 +47,7 @@ class XyzEmployee:public XyzEmployeeIF
 	virtual string getBranchName();
 	virtual void setCollegeName(string);
 	virtual void setBranchName(string);
-	// virtual ostream & print(ostream &);
-	// virtual ostream & print(ostream &, unsigned int);
+
 
 };
 

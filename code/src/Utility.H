@@ -10,10 +10,11 @@
 
 using namespace std;
 
-#define NUM_NAMES                3
+#define NUM_NAMES               7
 #define NUM_OF_AGENCIES         3
 #define NUM_OF_COLLEGES         7
 #define NUM_OF_BRANCHES         2
+#define CURRENT_YEAR            2026
 
 
 enum EmployeeType
@@ -137,10 +138,10 @@ void printAddEmployeeOption();
 void printXyzEmpSummaryMenu();
 void printOthersMenu();
 
-unsigned int chooseMainMenuChoice();
-unsigned int chooseAddEmpOption();
-unsigned int chooseXyzEmpSummaryOption();
-unsigned int chooseOthersMenuOption();
+int chooseMainMenuChoice();
+int chooseAddEmpOption();
+int chooseXyzEmpSummaryOption();
+int chooseOthersMenuOption();
 
 
 namespace EmpRandDataGen
@@ -153,6 +154,7 @@ namespace EmpRandDataGen
 
     string getRandomEmpDob();
     string getRandomEmpDoJ();
+    string getRandomEmpDoL();
 
     
     string getRandomEmpName(unsigned int employeeGenderParm);

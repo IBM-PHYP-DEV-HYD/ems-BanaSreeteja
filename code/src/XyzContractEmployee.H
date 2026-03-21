@@ -9,18 +9,16 @@ class XyzContractEmployee:public XyzEmployee
 {
     private:
 
-        ExternalAgency mExtAgency;
+        string mExtAgency;
         
         
     public:
 
         XyzContractEmployee(unsigned int);
         
-        // ostream & print(ostream &);
-		// ostream & print(ostream &, unsigned int);
-
-        ExternalAgency getExternalAgency();
-        void setExternalAgency(ExternalAgency externalAgencyParm);
+        void setAgencyName(string agencyNameParm);
+        string getAgencyName();
+        
         
 };
 

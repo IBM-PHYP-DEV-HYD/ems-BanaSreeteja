@@ -34,8 +34,7 @@ class XyzEmployeeIF
 	virtual void setCollegeName(string) = 0;
 	virtual void setBranchName(string) = 0;
 
-	// virtual ostream & print(ostream &) = 0;
-    
+
 };
 
 

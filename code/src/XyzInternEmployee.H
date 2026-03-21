@@ -20,16 +20,12 @@ class XyzInternEmployee:public XyzEmployee
                 
         ~XyzInternEmployee();
 
-        string getCollege();
-        string getBranch();
-        
-
-        void setCollege(string collegeParm);
-        void setBranch(string branchParm);
+        string getCollegeName();
+        string getBranchName();
+        void setCollegeName(string collegeParm);
+        void setBranchName(string branchParm);
 
 
-        // ostream & print(ostream &);
-		// ostream & print(ostream &, unsigned int);
         
 };
 
