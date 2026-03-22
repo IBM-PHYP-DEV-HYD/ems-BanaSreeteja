@@ -1,5 +1,6 @@
 
 #include "XyzEmployeeManager.H"
+#include "RandomData.H"
 #include <algorithm>
 #include <iomanip>
 
@@ -22,16 +23,29 @@ namespace {
 
 XyzEmployeeManager::XyzEmployeeManager() : mEmpIdCounter(1)
 {
-    cout << "XyzEmployeeManger constructor" << endl;
-    mActiveInactiveEmpDeue = new Edll<XyzEmployeeIF*>();
+    cout << "XyzEmployeeManager constructor" << endl;
+    mActiveInactiveEmpDeque = new Edll<XyzEmployeeIF*>();
     mResignedEmpDeque = new Edll<XyzEmployeeIF*>();
 }
 
 
-XyzEmployeeManager::~XyzEmployeeManager() 
-{ 
-    cout << "XyzEmployeeManger destructor" << endl;
-    delete mActiveInactiveEmpDeue;
+XyzEmployeeManager::~XyzEmployeeManager()
+{
+    cout << "XyzEmployeeManager destructor" << endl;
+    
+    // Delete all employee objects in active/inactive deque
+    for (size_t index = 0; index < mActiveInactiveEmpDeque->size(); index++)
+    {
+        delete (*mActiveInactiveEmpDeque)[index];
+    }
+
+    // Delete all employee objects in resigned deque
+    for (size_t index = 0; index < mResignedEmpDeque->size(); index++)
+    {
+        delete (*mResignedEmpDeque)[index];
+    }
+    
+    delete mActiveInactiveEmpDeque;
     delete mResignedEmpDeque;
 }
 
@@ -42,7 +56,7 @@ void XyzEmployeeManager::pAddFullTimeEmployee()
 
     if(sEmpStatus == ACTIVE || sEmpStatus == INACTIVE)
     {
-        mActiveInactiveEmpDeue->pushBack(sNewEmp);
+        mActiveInactiveEmpDeque->pushBack(sNewEmp);
     }
 
     if(sEmpStatus == RESIGNED)
@@ -63,7 +77,7 @@ void XyzEmployeeManager::pAddContractEmployee()
 
     if(sEmpStatus == ACTIVE || sEmpStatus == INACTIVE)
     {
-        mActiveInactiveEmpDeue->pushBack(sNewEmp);
+        mActiveInactiveEmpDeque->pushBack(sNewEmp);
     }
     
     if(sEmpStatus == RESIGNED)
@@ -83,7 +97,7 @@ void XyzEmployeeManager::pAddInternEmployee()
 
     if(sEmpStatus == ACTIVE || sEmpStatus == INACTIVE)
     {
-        mActiveInactiveEmpDeue->pushBack(sNewEmp);
+        mActiveInactiveEmpDeque->pushBack(sNewEmp);
     }
     
     if(sEmpStatus == RESIGNED)
@@ -211,6 +225,7 @@ void XyzEmployeeManager::processEmployees()
                 }
                 else
                 {
+                    cout << "Invalid choice! Try again. \n";
 
                 }
                 break;
@@ -234,7 +249,7 @@ void XyzEmployeeManager::processEmployees()
 
 Edll<XyzEmployeeIF*> * XyzEmployeeManager::getActInactEmpDeque()
 {
-    return mActiveInactiveEmpDeue;
+    return mActiveInactiveEmpDeque;
 }
 
 Edll<XyzEmployeeIF*> * XyzEmployeeManager::getResignedEmpDeque()
@@ -254,20 +269,20 @@ void XyzEmployeeManager::removeEmployee(unsigned int idParm)
     bool sFound = false;
     
     // Search in active/inactive employees
-    for(size_t i = 0; i < mActiveInactiveEmpDeue->size(); i++)
+    for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
     {
-        string sEmployeeId = (*mActiveInactiveEmpDeue)[i]->getEmployeeId();
+        string sEmployeeId = (*mActiveInactiveEmpDeque)[i]->getEmployeeId();
         // Extract numeric part from employee ID (e.g., "Xyz0123F" -> "Xyz0123")
         size_t sTypePos = sEmployeeId.find_last_of("FCI");
         string sIdWithoutType = (sTypePos != string::npos) ? sEmployeeId.substr(0, sTypePos) : sEmployeeId;
         
         if(sIdWithoutType == sSearchId)
         {
-            XyzEmployeeIF* sEmp = (*mActiveInactiveEmpDeue)[i];
+            XyzEmployeeIF* sEmp = (*mActiveInactiveEmpDeque)[i];
             
             // Move to resigned deque
             mResignedEmpDeque->pushBack(sEmp);
-            mActiveInactiveEmpDeue->removeAtMiddle(i);
+            mActiveInactiveEmpDeque->removeAtMiddle(i);
             
             cout << "Employee " << sEmployeeId << " has been removed and moved to resigned list.\n";
             sFound = true;
@@ -292,9 +307,9 @@ void XyzEmployeeManager::convertInternToFulltimer(unsigned int idParm)
     bool sFound = false;
     
     // Search for intern in active/inactive employees
-    for(size_t i = 0; i < mActiveInactiveEmpDeue->size(); i++)
+    for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
     {
-        XyzEmployeeIF* sEmp = (*mActiveInactiveEmpDeue)[i];
+        XyzEmployeeIF* sEmp = (*mActiveInactiveEmpDeque)[i];
         
         if(sEmp->getEmployeeId() == sSearchId && sEmp->getEmployeeType() == INTERN)
         {
@@ -307,11 +322,11 @@ void XyzEmployeeManager::convertInternToFulltimer(unsigned int idParm)
             mEmpIdCounter++;
             
             // Remove intern 
-            mActiveInactiveEmpDeue->removeAtMiddle(i);
+            mActiveInactiveEmpDeque->removeAtMiddle(i);
             delete sEmp;
             
             // Add new full-timer
-            mActiveInactiveEmpDeue->pushBack(sNewFullTimer);
+            mActiveInactiveEmpDeque->pushBack(sNewFullTimer);
             
             cout << "Conversion successful! New Full-Time Employee ID: " << sNewFullTimer->getEmployeeId() << "\n";
             sFound = true;
@@ -363,9 +378,9 @@ void XyzEmployeeManager::addLeavesForFullTimers(unsigned int idParm)
     bool sFound = false;
     
     // Search for full-time employee
-    for(size_t i = 0; i < mActiveInactiveEmpDeue->size(); i++)
+    for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
     {
-        XyzEmployeeIF* sEmp = (*mActiveInactiveEmpDeue)[i];
+        XyzEmployeeIF* sEmp = (*mActiveInactiveEmpDeque)[i];
         
         if(sEmp->getEmployeeId() == sSearchId && sEmp->getEmployeeType() == FULL_TIME)
         {
@@ -417,9 +432,9 @@ void XyzEmployeeManager:: printEmpsInfo(unsigned int filterType)
         cout << "\n===== ALL EMPLOYEES SUMMARY (Active/Inactive Only) =====\n";
         printTableHeader();
         
-        for(size_t i = 0; i < mActiveInactiveEmpDeue->size(); i++)
+        for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
         {
-            printEmployeeTableRow((*mActiveInactiveEmpDeue)[i]);
+            printEmployeeTableRow((*mActiveInactiveEmpDeque)[i]);
         }
         
         cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
@@ -431,11 +446,11 @@ void XyzEmployeeManager:: printEmpsInfo(unsigned int filterType)
         cout << "\n===== EMPLOYEES BY TYPE =====\n";
         printTableHeader();
         
-        for(size_t i = 0; i < mActiveInactiveEmpDeue->size(); i++)
+        for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
         {
-            if((*mActiveInactiveEmpDeue)[i]->getEmployeeType() == sTypeChoice)
+            if((*mActiveInactiveEmpDeque)[i]->getEmployeeType() == sTypeChoice)
             {
-                printEmployeeTableRow((*mActiveInactiveEmpDeue)[i]);
+                printEmployeeTableRow((*mActiveInactiveEmpDeque)[i]);
             }
         }
         
@@ -456,11 +471,11 @@ void XyzEmployeeManager:: printEmpsInfo(unsigned int filterType)
         cout << "\n===== EMPLOYEES BY GENDER =====\n";
         printTableHeader();
         
-        for(size_t i = 0; i < mActiveInactiveEmpDeue->size(); i++)
+        for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
         {
-            if((*mActiveInactiveEmpDeue)[i]->getEmployeeGender() == sGenderChoice)
+            if((*mActiveInactiveEmpDeque)[i]->getEmployeeGender() == sGenderChoice)
             {
-                printEmployeeTableRow((*mActiveInactiveEmpDeue)[i]);
+                printEmployeeTableRow((*mActiveInactiveEmpDeque)[i]);
             }
         }
         
@@ -490,11 +505,11 @@ void XyzEmployeeManager:: printEmpsInfo(unsigned int filterType)
         }
         else
         {
-            for(size_t i = 0; i < mActiveInactiveEmpDeue->size(); i++)
+            for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
             {
-                if((*mActiveInactiveEmpDeue)[i]->getEmployeeStatus() == sStatusChoice)
+                if((*mActiveInactiveEmpDeque)[i]->getEmployeeStatus() == sStatusChoice)
                 {
-                    printEmployeeTableRow((*mActiveInactiveEmpDeue)[i]);
+                    printEmployeeTableRow((*mActiveInactiveEmpDeque)[i]);
                 }
             }
         }
@@ -515,11 +530,13 @@ void XyzEmployeeManager:: printEmpInfo(unsigned int idParm)
     bool sFound = false;
     
     // Search in active/inactive employees
-    for(size_t i = 0; i < mActiveInactiveEmpDeue->size(); i++)
+    for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
     {
-        if((*mActiveInactiveEmpDeue)[i]->getEmployeeId().find(sSearchId) != string::npos)
+        if((*mActiveInactiveEmpDeque)[i]->getEmployeeId().find(sSearchId) != string::npos)
         {
-            printEmployeeDetails((*mActiveInactiveEmpDeue)[i]);
+            printTableHeader();
+            printEmployeeTableRow((*mActiveInactiveEmpDeque)[i]);
+            cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
             sFound = true;
             break;
         }
@@ -532,7 +549,9 @@ void XyzEmployeeManager:: printEmpInfo(unsigned int idParm)
         {
             if((*mResignedEmpDeque)[i]->getEmployeeId().find(sSearchId) != string::npos)
             {
-                printEmployeeDetails((*mResignedEmpDeque)[i]);
+                printTableHeader();
+                printEmployeeTableRow((*mResignedEmpDeque)[i]);
+                cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
                 sFound = true;
                 break;
             }
@@ -548,13 +567,14 @@ void XyzEmployeeManager:: printEmpInfo(unsigned int idParm)
 void XyzEmployeeManager:: printEmpInfo(string nameParm)
 {
     bool sFound = false;
+    bool sHeaderPrinted = false;
     
     cout << "\n===== SEARCH RESULTS FOR: " << nameParm << " =====\n";
     
     // Search in active/inactive employees
-    for(size_t i = 0; i < mActiveInactiveEmpDeue->size(); i++)
+    for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
     {
-        string sEmpName = (*mActiveInactiveEmpDeue)[i]->getEmployeeName();
+        string sEmpName = (*mActiveInactiveEmpDeque)[i]->getEmployeeName();
         // Convert to lowercase for case-insensitive search
         transform(sEmpName.begin(), sEmpName.end(), sEmpName.begin(), ::tolower);
         string sSearchName = nameParm;
@@ -562,7 +582,12 @@ void XyzEmployeeManager:: printEmpInfo(string nameParm)
         
         if(sEmpName.find(sSearchName) != string::npos)
         {
-            printEmployeeDetails((*mActiveInactiveEmpDeue)[i]);
+            if(!sHeaderPrinted)
+            {
+                printTableHeader();
+                sHeaderPrinted = true;
+            }
+            printEmployeeTableRow((*mActiveInactiveEmpDeque)[i]);
             sFound = true;
         }
     }
@@ -577,12 +602,21 @@ void XyzEmployeeManager:: printEmpInfo(string nameParm)
         
         if(sEmpName.find(sSearchName) != string::npos)
         {
-            printEmployeeDetails((*mResignedEmpDeque)[i]);
+            if(!sHeaderPrinted)
+            {
+                printTableHeader();
+                sHeaderPrinted = true;
+            }
+            printEmployeeTableRow((*mResignedEmpDeque)[i]);
             sFound = true;
         }
     }
     
-    if(!sFound)
+    if(sFound)
+    {
+        cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
+    }
+    else
     {
         cout << "No employee found with name containing: " << nameParm << "\n";
     }

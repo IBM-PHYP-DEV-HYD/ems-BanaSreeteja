@@ -1,4 +1,5 @@
 #include "XyzEmployee.H"
+#include "RandomData.H"
 
 XyzEmployee::XyzEmployee(unsigned int idParm, unsigned int employeeTypeParm)
 {
@@ -11,20 +12,8 @@ XyzEmployee::XyzEmployee(unsigned int idParm, unsigned int employeeTypeParm)
     mDateOfBirth = EmpRandDataGen::getRandomEmpDob();
     mDateOfJoining = EmpRandDataGen::getRandomEmpDoJ();
     mEmployeeStatus = EmpRandDataGen::getRandomEmpStatus();
-    
-    // Calculate Date of Leaving based on employee type
-    if(mEmployeeType == FULL_TIME)
-    {
-
-    }
-    else if(mEmployeeType == CONTRACT)
-    {
-
-    }
-    else if(mEmployeeType == INTERN)
-    {
-
-    }
+    // Calculate DoL based on employee type and DOJ
+    mDateOfLeaving = EmpRandDataGen::getRandomEmpDoL(mDateOfJoining, mEmployeeType);
 }
 
 

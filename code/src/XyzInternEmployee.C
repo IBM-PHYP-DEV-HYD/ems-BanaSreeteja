@@ -1,7 +1,8 @@
 #include "XyzInternEmployee.H"
+#include "RandomData.H"
 
 
-XyzInternEmployee :: XyzInternEmployee(unsigned idParm):XyzEmployee(idParm, INTERN)
+XyzInternEmployee :: XyzInternEmployee(unsigned int idParm):XyzEmployee(idParm, INTERN)
 
 {
     // cout << "XyzIntern Employee Constructor\n";

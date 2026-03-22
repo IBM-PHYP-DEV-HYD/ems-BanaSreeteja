@@ -14,7 +14,7 @@ class XyzEmployeeManager
 {
     private:
 
-    Edll<XyzEmployeeIF*> * mActiveInactiveEmpDeue;
+    Edll<XyzEmployeeIF*> * mActiveInactiveEmpDeque;
     Edll<XyzEmployeeIF*> * mResignedEmpDeque;
     int mEmpIdCounter;
 

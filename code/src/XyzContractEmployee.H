@@ -15,6 +15,7 @@ class XyzContractEmployee:public XyzEmployee
     public:
 
         XyzContractEmployee(unsigned int);
+        ~XyzContractEmployee();
         
         void setAgencyName(string agencyNameParm);
         string getAgencyName();

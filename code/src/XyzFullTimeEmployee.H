@@ -9,16 +9,14 @@ using namespace std;
 class XyzFullTimeEmployee:public XyzEmployee
 {
     private:
-        int mLeavesAvailed;
-        int mTotalLeaves;
+        unsigned int mLeavesAvailed;
+        unsigned int mTotalLeaves;
 
     public:
     
     XyzFullTimeEmployee(unsigned int);
-
     ~XyzFullTimeEmployee();
     
-
     unsigned int getTotalLeaves();
     unsigned int getAvailedLeaves();
     void setTotalLeaves(unsigned int);

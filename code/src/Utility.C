@@ -1,22 +1,8 @@
 
 #include "Utility.H"
+#include "RandomData.H"
 
 using namespace std;
-
-
-
-static string first_names[2][NUM_NAMES] = {
-    {"Vijay", "Arun", "Kiran", "Ravi", "Suresh", "Manoj", "Rahul"},
-    {"Meena", "Sree", "Sai", "Priya", "Divya", "Anjali", "Kavya"}
-};
-static string last_names[2][NUM_NAMES] = {
-    {"Kumar", "Reddy", "Sharma", "Patel", "Singh", "Rao", "Gupta"},
-    {"Lakshmi", "Priya", "Sharma", "Reddy", "Devi", "Kumari", "Singh"}
-};
-
-static string AGENCY_NAMES[] = {"Avengers", "Justice League", "X-Men"};
-static string COLLEGE_NAMES[] = {"IIT Delhi", "IIT Mumbai", "IIT Hyderabad", "IIT Kanpur", "NIT Warangal", "NIT Tiruchi", "IIIT Hyderabad"};
-static string BRANCH_NAMES[] = {"ECE","CSE","CSIT"};
 
 
 void printMainMenu()
@@ -96,9 +82,10 @@ int chooseAddEmpOption()
     else if(sChoice == ADD_SPECIFIC_EMPLOYEE)
     {
         sChoice = safeInput<int>("Employee type : (1=FullTime,2=Contractor,3=Intern)\n");
-        if(sChoice == EmployeeType::FULL_TIME);
-        else if(sChoice == EmployeeType::CONTRACT);
-        else if(sChoice == EmployeeType::INTERN);
+        if(sChoice == EmployeeType::FULL_TIME || sChoice == EmployeeType::CONTRACT || sChoice == EmployeeType::INTERN)
+        {
+            // Valid choice, continue
+        }
         else
         {
             cout << "Invalid add specific employee choice\n";
@@ -131,111 +118,6 @@ int chooseOthersMenuOption()
 }
 
 
-namespace EmpRandDataGen
-{
-    int getRandomNumber(int startNumParm, int endNumParm)
-    {
-        random_device sRandomDevice;
-        mt19937 sRandomNumberGenerator(sRandomDevice());
-        uniform_int_distribution<int> sGenerate(startNumParm, endNumParm);
-        int sRandomNumber = sGenerate(sRandomNumberGenerator);
-        return sRandomNumber;
-    }
-
-    string getRandomEmpName(unsigned int employeeGenderParm)
-    {
-        string sName = first_names[employeeGenderParm-1][getRandomNumber(0,NUM_NAMES-1)];
-        sName += " ";
-        sName += last_names[employeeGenderParm-1][getRandomNumber(0,NUM_NAMES-1)];
-        // cout << "Name : " << sName << "\n";
-        return sName;
-    }
-
-    int getRandomEmpGender()
-    {
-        return getRandomNumber(1,2);
-    }
-
-    int getRandomEmpType()
-    {
-        return getRandomNumber(1,3);
-    }
-
-    string getRanomEmpAgency()
-    {
-        return AGENCY_NAMES[getRandomNumber(0,2)];
-    }
-
-    string getRandomEmpCollege()
-    {
-        return COLLEGE_NAMES[getRandomNumber(0,6)];
-    }
-
-    string getRandomEmpBranch()
-    {
-        return BRANCH_NAMES[getRandomNumber(0,2)];
-    }
-
-    string getRandomEmpId(unsigned int idParm, int empTypeParm)
-    {
-        // Xyz+ Id (4 digits with leading zeros) + Employeetype
-        string sType = "\0";
-        if(empTypeParm == FULL_TIME)
-        {
-            sType = "F";
-        }
-        else if(empTypeParm == CONTRACT)
-        {
-            sType = "C";
-        }
-        else if(empTypeParm == INTERN)
-        {
-            sType = "I";
-        }
-
-        // Pad ID with leading zeros to make it 4 digits
-        string idStr = to_string(idParm);
-        while(idStr.length() < 4)
-        {
-            idStr = "0" + idStr;
-        }
-
-        return "Xyz" + idStr + sType;
-    }
-
-    int getRandomEmpStatus()
-    {
-        return getRandomNumber(1,3);
-    }
-
-    string getRandomEmpDob()
-    {
-        // 21<=age<=60
-        int year = getRandomNumber(CURRENT_YEAR-60, CURRENT_YEAR-21);
-        int month = getRandomNumber(1, 12);
-        int day = getRandomNumber(1, 28);
-        
-        string sMonth = (month < 10) ? "0" + to_string(month) : to_string(month);
-        string sDay = (day < 10) ? "0" + to_string(day) : to_string(day);
-        
-        return to_string(day) + "/" + sMonth + "/" + to_string(year);
-    }
-
-
-    string getRandomEmpDoJ()
-    {
-        // Generate DOJ between year when employee turns 21 and current year
-        int year = getRandomNumber(2000, CURRENT_YEAR);
-        int month = getRandomNumber(1, 12);
-        int day = getRandomNumber(1, 28);
-        
-        string sMonth = (month < 10) ? "0" + to_string(month) : to_string(month);
-        string sDay = (day < 10) ? "0" + to_string(day) : to_string(day);
-        
-        return to_string(day) + "/" + sMonth + "/" + to_string(year);
-    }
-
-}
 
 
 

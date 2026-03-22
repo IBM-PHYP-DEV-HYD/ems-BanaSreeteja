@@ -4,8 +4,7 @@
 #include <iostream>
 #include <string>
 
-#include <limits>
-#include <random>
+
 
 
 using namespace std;
@@ -13,7 +12,7 @@ using namespace std;
 #define NUM_NAMES               7
 #define NUM_OF_AGENCIES         3
 #define NUM_OF_COLLEGES         7
-#define NUM_OF_BRANCHES         2
+#define NUM_OF_BRANCHES         3
 #define CURRENT_YEAR            2026
 
 
@@ -66,7 +65,7 @@ enum HiringFromBranches
 enum ExternalAgency
 {
     AVENGERS                   = 0,
-    JUSTICE_LEAUGE             = 1,
+    JUSTICE_LEAGUE             = 1,
     X_MEN                      = 2,
     AGENCY_UNDEFINED           = 3,
 };
@@ -144,29 +143,5 @@ int chooseXyzEmpSummaryOption();
 int chooseOthersMenuOption();
 
 
-namespace EmpRandDataGen
-{
-
-    int getRandomNumber(int startNumParm, int endNumParm);
-    int getRandomEmpGender();
-    int getRandomEmpType();
-    int getRandomEmpStatus();
-
-    string getRandomEmpDob();
-    string getRandomEmpDoJ();
-    string getRandomEmpDoL();
-
-    
-    string getRandomEmpName(unsigned int employeeGenderParm);
-    string getRandomEmpId(unsigned int idParm, int empTypeParm);
-
-
-    string getRanomEmpAgency();
-	string getRandomEmpCollege();
-	string getRandomEmpBranch();
-
-
-
-}
 
 #endif
