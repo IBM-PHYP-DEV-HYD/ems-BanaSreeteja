@@ -10,7 +10,7 @@ XyzEmployee::XyzEmployee(unsigned int idParm, unsigned int employeeTypeParm)
     mEmployeeName = EmpRandDataGen::getRandomEmpName(mEmployeeGender);
     mEmployeeId = EmpRandDataGen::getRandomEmpId(idParm, employeeTypeParm);
     mDateOfBirth = EmpRandDataGen::getRandomEmpDob();
-    mDateOfJoining = EmpRandDataGen::getRandomEmpDoJ();
+    mDateOfJoining = EmpRandDataGen::getRandomEmpDoJ(mDateOfBirth);
     mEmployeeStatus = EmpRandDataGen::getRandomEmpStatus();
     // Calculate DoL based on employee type and DOJ
     mDateOfLeaving = EmpRandDataGen::getRandomEmpDoL(mDateOfJoining, mEmployeeType);
@@ -19,7 +19,7 @@ XyzEmployee::XyzEmployee(unsigned int idParm, unsigned int employeeTypeParm)
 
 XyzEmployee::~XyzEmployee()
 {
-    cout << " XyzEmployee Destructor called \n";
+    // cout << " XyzEmployee Destructor called \n";
 }
 
 string XyzEmployee::getEmployeeName()

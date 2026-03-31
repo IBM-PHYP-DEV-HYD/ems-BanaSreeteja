@@ -119,10 +119,42 @@ namespace EmpRandDataGen
     }
 
 
-    string getRandomEmpDoJ()
+    string getRandomEmpDoJ(const string& dobParm)
     {
+        // Parse DOB (format: DD/MM/YYYY)
+        if(dobParm.length() < 10)
+        {
+            // Fallback to default range if DOB is invalid
+            int year = getRandomNumber(2000, CURRENT_YEAR);
+            int month = getRandomNumber(1, 12);
+            int maxDay = getDaysInMonth(year, month);
+            int day = getRandomNumber(1, maxDay);
+            
+            string sMonth = (month < 10) ? "0" + to_string(month) : to_string(month);
+            string sDay = (day < 10) ? "0" + to_string(day) : to_string(day);
+            
+            return sDay + "/" + sMonth + "/" + to_string(year);
+        }
+        
+        int dobYear = stoi(dobParm.substr(6, 4));
+        
+        // Calculate the year when employee turns 21
+        int minJoiningYear = dobYear + 21;
+        
+        // Ensure minJoiningYear is not before 2000 and not after CURRENT_YEAR
+        if(minJoiningYear < 2000)
+        {
+            minJoiningYear = 2000;
+        }
+        
+        // If employee hasn't turned 21 yet, use current year as minimum
+        if(minJoiningYear > CURRENT_YEAR)
+        {
+            minJoiningYear = CURRENT_YEAR;
+        }
+        
         // Generate DOJ between year when employee turns 21 and current year
-        int year = getRandomNumber(2000, CURRENT_YEAR);
+        int year = getRandomNumber(minJoiningYear, CURRENT_YEAR);
         int month = getRandomNumber(1, 12);
         int maxDay = getDaysInMonth(year, month);
         int day = getRandomNumber(1, maxDay);

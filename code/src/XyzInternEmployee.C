@@ -12,7 +12,7 @@ XyzInternEmployee :: XyzInternEmployee(unsigned int idParm):XyzEmployee(idParm, 
 
 XyzInternEmployee :: ~XyzInternEmployee()
 {
-    cout << "XyzIntern Employee Destructor\n";
+    // cout << "XyzIntern Employee Destructor\n";
 }
 
 string XyzInternEmployee::getCollegeName()

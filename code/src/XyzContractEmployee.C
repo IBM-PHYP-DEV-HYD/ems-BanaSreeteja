@@ -12,7 +12,7 @@ XyzContractEmployee::XyzContractEmployee(unsigned int idParm):XyzEmployee(idParm
 
 XyzContractEmployee::~XyzContractEmployee()
 {
-    cout << "XyzContractEmployee destructor called\n";
+    // cout << "XyzContractEmployee destructor called\n";
 }
 
 void XyzContractEmployee::setAgencyName(string agencyNameParm)

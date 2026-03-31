@@ -24,15 +24,19 @@ class XyzEmployeeManager
     void pAddRandomMultipleEmployees();
     void printEmployeeDetails(XyzEmployeeIF* empParm);
     void printEmployeeSummary(XyzEmployeeIF* empParm);
-    void printEmployeeTableRow(XyzEmployeeIF* empParm);
-    void printTableHeader();
+    void printEmployeeTableRow(XyzEmployeeIF* empParm, bool typeSpecific = false);
+    
+    void printTableHeader(unsigned int empType = 0);
+    void printTableHeaderForFullTimer();
+    void printTableHeaderForContractEmp();
+    void printTableHeaderForIntern();
     
     public:
     XyzEmployeeManager();
     ~XyzEmployeeManager();
     
     void processEmployees();
-    void removeEmployee(unsigned int);
+    void removeEmployee(string);
     Edll<XyzEmployeeIF*> * getActInactEmpDeque();
     Edll<XyzEmployeeIF*> * getResignedEmpDeque();
 
@@ -40,6 +44,7 @@ class XyzEmployeeManager
     void printEmpsInfo(unsigned int);
     void printEmpInfo(unsigned int);
     void printEmpInfo(string);
+    void printEmpInfoByIdString(string);
 
     void convertInternToFulltimer(unsigned int);
     void addLeavesForFullTimers(unsigned int);

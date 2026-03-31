@@ -14,7 +14,7 @@ XyzFullTimeEmployee::XyzFullTimeEmployee(unsigned int idParm):XyzEmployee(idParm
 
 XyzFullTimeEmployee::~XyzFullTimeEmployee()
 {
-    cout << "XyzFullTimeEmployee destructor called \n";
+    // cout << "XyzFullTimeEmployee destructor called \n";
 }
 
 unsigned int XyzFullTimeEmployee::getAvailedLeaves()

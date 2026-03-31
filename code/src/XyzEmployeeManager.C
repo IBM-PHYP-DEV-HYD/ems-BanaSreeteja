@@ -23,7 +23,7 @@ namespace {
 
 XyzEmployeeManager::XyzEmployeeManager() : mEmpIdCounter(1)
 {
-    cout << "XyzEmployeeManager constructor" << endl;
+    // cout << "XyzEmployeeManager constructor" << endl;
     mActiveInactiveEmpDeque = new Edll<XyzEmployeeIF*>();
     mResignedEmpDeque = new Edll<XyzEmployeeIF*>();
 }
@@ -31,7 +31,7 @@ XyzEmployeeManager::XyzEmployeeManager() : mEmpIdCounter(1)
 
 XyzEmployeeManager::~XyzEmployeeManager()
 {
-    cout << "XyzEmployeeManager destructor" << endl;
+    // cout << "XyzEmployeeManager destructor" << endl;
     
     // Delete all employee objects in active/inactive deque
     for (size_t index = 0; index < mActiveInactiveEmpDeque->size(); index++)
@@ -160,8 +160,7 @@ void XyzEmployeeManager::processEmployees()
 
             case MainMenu::REMOVE_EMPLOYEE:
             {
-                unsigned int sEmployeeID;
-                sEmployeeID = safeInput<unsigned int>("Employee ID: ");
+                string sEmployeeID = safeInput<string>("Employee ID (e.g., Xyz0001F): ");
                 removeEmployee(sEmployeeID);
                 break;
             }
@@ -172,8 +171,8 @@ void XyzEmployeeManager::processEmployees()
                 if(sEmpChoice == EmployeeDetailsMenuChoice::ByID)
                 {
                     // print employee details as per employee ID
-                    unsigned int sEmployeeID = safeInput<unsigned int>("Employee ID: ");
-                    printEmpInfo(sEmployeeID);
+                    string sEmployeeID = safeInput<string>("Employee ID (e.g., Xyz0001F): ");
+                    printEmpInfoByIdString(sEmployeeID);
                 }
                 else if(sEmpChoice == EmployeeDetailsMenuChoice::AllEmployees)
                 {
@@ -215,8 +214,9 @@ void XyzEmployeeManager::processEmployees()
                 }
                 else if (sChoice == SEARCH_BY_ID)
                 {
-                    unsigned int sEmployeeID = safeInput<unsigned int>("Enter Employee ID: ");
-                    printEmpInfo(sEmployeeID);
+                    // print employee details as per employee ID
+                    string sEmployeeID = safeInput<string>("Employee ID (e.g., Xyz0001F): ");
+                    printEmpInfoByIdString(sEmployeeID);
                 }
                 else if (sChoice == SEARCH_BY_NAME)
                 {
@@ -257,26 +257,16 @@ Edll<XyzEmployeeIF*> * XyzEmployeeManager::getResignedEmpDeque()
     return mResignedEmpDeque;
 }
 
-void XyzEmployeeManager::removeEmployee(unsigned int idParm)
+void XyzEmployeeManager::removeEmployee(string idParm)
 {
-    // Format ID as 4-digit with leading zeros (e.g., 1 -> "0001")
-    string sIdStr = to_string(idParm);
-    while(sIdStr.length() < 4)
-    {
-        sIdStr = "0" + sIdStr;
-    }
-    string sSearchId = "Xyz" + sIdStr;
     bool sFound = false;
     
     // Search in active/inactive employees
     for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
     {
         string sEmployeeId = (*mActiveInactiveEmpDeque)[i]->getEmployeeId();
-        // Extract numeric part from employee ID (e.g., "Xyz0123F" -> "Xyz0123")
-        size_t sTypePos = sEmployeeId.find_last_of("FCI");
-        string sIdWithoutType = (sTypePos != string::npos) ? sEmployeeId.substr(0, sTypePos) : sEmployeeId;
         
-        if(sIdWithoutType == sSearchId)
+        if(sEmployeeId == idParm)
         {
             XyzEmployeeIF* sEmp = (*mActiveInactiveEmpDeque)[i];
             
@@ -291,7 +281,7 @@ void XyzEmployeeManager::removeEmployee(unsigned int idParm)
     }
     if(!sFound)
     {
-        cout << "Employee with ID " << idParm << " not found in active/inactive list!\n";
+        cout << "Employee with ID '" << idParm << "' not found in active/inactive list!\n";
     }
 }
 
@@ -404,10 +394,34 @@ void XyzEmployeeManager::addLeavesForFullTimers(unsigned int idParm)
     }
 }
 
-void XyzEmployeeManager::printTableHeader()
+void XyzEmployeeManager::printTableHeader(unsigned int empType)
 {
     cout << left;
-    cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
+    
+    int separatorLength;
+    if(empType == FULL_TIME)
+    {
+        separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                         TypeWidth + StatusWidth + LeavesAvailedWidth + TotalLeavesWidth + (10 * 2) + 1;
+    }
+    else if(empType == CONTRACT)
+    {
+        separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                         TypeWidth + StatusWidth + AgencyWidth + (9 * 2) + 1;
+    }
+    else if(empType == INTERN)
+    {
+        separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                         TypeWidth + StatusWidth + CollegeWidth + BranchWidth + (10 * 2) + 1;
+    }
+    else
+    {
+        separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                         TypeWidth + StatusWidth + CollegeWidth + BranchWidth +
+                         LeavesAvailedWidth + TotalLeavesWidth + AgencyWidth + (13 * 2) + 1;
+    }
+    
+    cout << string(separatorLength, '-') << "\n";
     cout << "| " << setw(NameWidth)           << "Name"
          << "| " << setw(IdWidth)             << "ID"
          << "| " << setw(GenderWidth)         << "Gender"
@@ -415,21 +429,55 @@ void XyzEmployeeManager::printTableHeader()
          << "| " << setw(DojWidth)            << "DOJ"
          << "| " << setw(DolWidth)            << "DOL"
          << "| " << setw(TypeWidth)           << "Type"
-         << "| " << setw(StatusWidth)         << "Status"
-         << "| " << setw(CollegeWidth)        << "College"
-         << "| " << setw(BranchWidth)         << "Branch"
-         << "| " << setw(LeavesAvailedWidth)  << "Leaves Availed"
-         << "| " << setw(TotalLeavesWidth)    << "Total Leaves"
-         << "| " << setw(AgencyWidth)         << "Agency"
-         << "|\n";
-    cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
+         << "| " << setw(StatusWidth)         << "Status";
+    
+    if(empType == FULL_TIME)
+    {
+        cout << "| " << setw(LeavesAvailedWidth)  << "Leaves Availed"
+             << "| " << setw(TotalLeavesWidth)    << "Total Leaves";
+    }
+    else if(empType == CONTRACT)
+    {
+        cout << "| " << setw(AgencyWidth)         << "Agency";
+    }
+    else if(empType == INTERN)
+    {
+        cout << "| " << setw(CollegeWidth)        << "College"
+             << "| " << setw(BranchWidth)         << "Branch";
+    }
+    else
+    {
+        // All columns for mixed types
+        cout << "| " << setw(CollegeWidth)        << "College"
+             << "| " << setw(BranchWidth)         << "Branch"
+             << "| " << setw(LeavesAvailedWidth)  << "Leaves Availed"
+             << "| " << setw(TotalLeavesWidth)    << "Total Leaves"
+             << "| " << setw(AgencyWidth)         << "Agency";
+    }
+    
+    cout << "|\n";
+    cout << string(separatorLength, '-') << "\n";
+}
+
+void XyzEmployeeManager::printTableHeaderForFullTimer()
+{
+    printTableHeader(FULL_TIME);
+}
+
+void XyzEmployeeManager::printTableHeaderForContractEmp()
+{
+    printTableHeader(CONTRACT);
+}
+
+void XyzEmployeeManager::printTableHeaderForIntern()
+{
+    printTableHeader(INTERN);
 }
 
 void XyzEmployeeManager:: printEmpsInfo(unsigned int filterType)
 {
     if(filterType == AllEmployees)
     {
-        cout << "\n===== ALL EMPLOYEES SUMMARY (Active/Inactive Only) =====\n";
         printTableHeader();
         
         for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
@@ -437,84 +485,142 @@ void XyzEmployeeManager:: printEmpsInfo(unsigned int filterType)
             printEmployeeTableRow((*mActiveInactiveEmpDeque)[i]);
         }
         
-        cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
+        // Print closing separator - 13 columns
+        int separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                             TypeWidth + StatusWidth + CollegeWidth + BranchWidth +
+                             LeavesAvailedWidth + TotalLeavesWidth + AgencyWidth + (13 * 2) + 1;
+        cout << string(separatorLength, '-') << "\n";
     }
     else if(filterType == ByType)
     {
         unsigned int sTypeChoice = safeInput<unsigned int>("Enter Type (1=FullTime, 2=Contractor, 3=Intern): ");
         
-        cout << "\n===== EMPLOYEES BY TYPE =====\n";
-        printTableHeader();
-        
-        for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
+        if(sTypeChoice == 1 || sTypeChoice == 2 || sTypeChoice == 3)
         {
-            if((*mActiveInactiveEmpDeque)[i]->getEmployeeType() == sTypeChoice)
+            if(sTypeChoice == 1)
             {
-                printEmployeeTableRow((*mActiveInactiveEmpDeque)[i]);
+                printTableHeaderForFullTimer();
             }
+            else if(sTypeChoice == 2)
+            {
+                printTableHeaderForContractEmp();
+            }
+            else if(sTypeChoice == 3)
+            {
+                printTableHeaderForIntern();
+            }
+            
+            for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
+            {
+                if((*mActiveInactiveEmpDeque)[i]->getEmployeeType() == sTypeChoice)
+                {
+                    printEmployeeTableRow((*mActiveInactiveEmpDeque)[i], true);
+                }
+            }
+            
+            for(size_t i = 0; i < mResignedEmpDeque->size(); i++)
+            {
+                if((*mResignedEmpDeque)[i]->getEmployeeType() == sTypeChoice)
+                {
+                    printEmployeeTableRow((*mResignedEmpDeque)[i], true);
+                }
+            }
+            
+            // Print closing separator based on type
+            int separatorLength;
+            if(sTypeChoice == FULL_TIME)
+            {
+                separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                                 TypeWidth + StatusWidth + LeavesAvailedWidth + TotalLeavesWidth + (10 * 2) + 1;
+            }
+            else if(sTypeChoice == CONTRACT)
+            {
+                separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                                 TypeWidth + StatusWidth + AgencyWidth + (9 * 2) + 1;
+            }
+            else // INTERN
+            {
+                separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                                 TypeWidth + StatusWidth + CollegeWidth + BranchWidth + (10 * 2) + 1;
+            }
+            cout << string(separatorLength, '-') << "\n";
         }
-        
-        for(size_t i = 0; i < mResignedEmpDeque->size(); i++)
+        else
         {
-            if((*mResignedEmpDeque)[i]->getEmployeeType() == sTypeChoice)
-            {
-                printEmployeeTableRow((*mResignedEmpDeque)[i]);
-            }
+            cout << "Invalid Type\n";
         }
-        
-        cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
     }
+
     else if(filterType == ByGender)
     {
         unsigned int sGenderChoice = safeInput<unsigned int>("Enter Gender (1=Male, 2=Female): ");
-        
-        cout << "\n===== EMPLOYEES BY GENDER =====\n";
-        printTableHeader();
-        
-        for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
+        if(sGenderChoice == 1 || sGenderChoice == 2)
         {
-            if((*mActiveInactiveEmpDeque)[i]->getEmployeeGender() == sGenderChoice)
+            printTableHeader();
+            
+            for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
             {
-                printEmployeeTableRow((*mActiveInactiveEmpDeque)[i]);
+                if((*mActiveInactiveEmpDeque)[i]->getEmployeeGender() == sGenderChoice)
+                {
+                    printEmployeeTableRow((*mActiveInactiveEmpDeque)[i]);
+                }
             }
+            
+            for(size_t i = 0; i < mResignedEmpDeque->size(); i++)
+            {
+                if((*mResignedEmpDeque)[i]->getEmployeeGender() == sGenderChoice)
+                {
+                    printEmployeeTableRow((*mResignedEmpDeque)[i]);
+                }
+            }
+            
+            // Print closing separator - 13 columns
+            int separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                                 TypeWidth + StatusWidth + CollegeWidth + BranchWidth +
+                                 LeavesAvailedWidth + TotalLeavesWidth + AgencyWidth + (13 * 2) + 1;
+            cout << string(separatorLength, '-') << "\n";
         }
-        
-        for(size_t i = 0; i < mResignedEmpDeque->size(); i++)
+        else
         {
-            if((*mResignedEmpDeque)[i]->getEmployeeGender() == sGenderChoice)
-            {
-                printEmployeeTableRow((*mResignedEmpDeque)[i]);
-            }
+            cout << "Invalid Gender Choice\n"; 
         }
-        
-        cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
     }
     else if(filterType == ByStatus)
     {
         unsigned int sStatusChoice = safeInput<unsigned int>("Enter Status (1=Active, 2=Inactive, 3=Resigned): ");
         
-        cout << "\n===== EMPLOYEES BY STATUS =====\n";
-        printTableHeader();
-        
-        if(sStatusChoice == RESIGNED)
+        if(sStatusChoice == 1 || sStatusChoice == 2 || sStatusChoice == 3)
         {
-            for(size_t i = 0; i < mResignedEmpDeque->size(); i++)
+            printTableHeader();
+            
+            if(sStatusChoice == RESIGNED)
             {
-                printEmployeeTableRow((*mResignedEmpDeque)[i]);
+                for(size_t i = 0; i < mResignedEmpDeque->size(); i++)
+                {
+                    printEmployeeTableRow((*mResignedEmpDeque)[i]);
+                }
             }
+            else
+            {
+                for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
+                {
+                    if((*mActiveInactiveEmpDeque)[i]->getEmployeeStatus() == sStatusChoice)
+                    {
+                        printEmployeeTableRow((*mActiveInactiveEmpDeque)[i]);
+                    }
+                }
+            }
+            
+            // Print closing separator - 13 columns
+            int separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                                 TypeWidth + StatusWidth + CollegeWidth + BranchWidth +
+                                 LeavesAvailedWidth + TotalLeavesWidth + AgencyWidth + (13 * 2) + 1;
+            cout << string(separatorLength, '-') << "\n";
         }
         else
         {
-            for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
-            {
-                if((*mActiveInactiveEmpDeque)[i]->getEmployeeStatus() == sStatusChoice)
-                {
-                    printEmployeeTableRow((*mActiveInactiveEmpDeque)[i]);
-                }
-            }
+            cout << "Invalid Status Choice\n"; 
         }
-        
-        cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
     }
 }
 
@@ -614,11 +720,124 @@ void XyzEmployeeManager:: printEmpInfo(string nameParm)
     
     if(sFound)
     {
-        cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
+        // Print closing separator - 13 columns
+        int separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                             TypeWidth + StatusWidth + CollegeWidth + BranchWidth +
+                             LeavesAvailedWidth + TotalLeavesWidth + AgencyWidth + (13 * 2) + 1;
+        cout << string(separatorLength, '-') << "\n";
     }
     else
     {
         cout << "No employee found with name containing: " << nameParm << "\n";
+    }
+}
+
+void XyzEmployeeManager::printEmpInfoByIdString(string idParm)
+{
+    bool sFound = false;
+    
+    cout << "\n===== SEARCH RESULTS FOR ID: " << idParm << " =====\n";
+    
+    // Search in active/inactive employees
+    for(size_t i = 0; i < mActiveInactiveEmpDeque->size(); i++)
+    {
+        if((*mActiveInactiveEmpDeque)[i]->getEmployeeId() == idParm)
+        {
+            XyzEmployeeIF* sEmp = (*mActiveInactiveEmpDeque)[i];
+            unsigned int sType = sEmp->getEmployeeType();
+            
+            // Calculate separator length
+            int separatorLength = 0;
+            if(sType == FULL_TIME)
+            {
+                // 10 columns
+                separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                                 TypeWidth + StatusWidth + LeavesAvailedWidth + TotalLeavesWidth + (10 * 2) + 1;
+                printTableHeaderForFullTimer();
+            }
+            else if(sType == CONTRACT)
+            {
+                // 9 columns
+                separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                                 TypeWidth + StatusWidth + AgencyWidth + (9 * 2) + 1;
+                printTableHeaderForContractEmp();
+            }
+            else if(sType == INTERN)
+            {
+                // 10 columns
+                separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                                 TypeWidth + StatusWidth + CollegeWidth + BranchWidth + (10 * 2) + 1;
+                printTableHeaderForIntern();
+            }
+            else
+            {
+                // 13 columns
+                separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                                 TypeWidth + StatusWidth + CollegeWidth + BranchWidth +
+                                 LeavesAvailedWidth + TotalLeavesWidth + AgencyWidth + (13 * 2) + 1;
+                printTableHeader();
+            }
+            
+            printEmployeeTableRow(sEmp, true);
+            cout << string(separatorLength, '-') << "\n";
+            sFound = true;
+            break;
+        }
+    }
+    
+    // Search in resigned employees
+    if(!sFound)
+    {
+        for(size_t i = 0; i < mResignedEmpDeque->size(); i++)
+        {
+            if((*mResignedEmpDeque)[i]->getEmployeeId() == idParm)
+            {
+                XyzEmployeeIF* sEmp = (*mResignedEmpDeque)[i];
+                unsigned int sType = sEmp->getEmployeeType();
+                
+                // Calculate separator length
+                int separatorLength = 0;
+                if(sType == FULL_TIME)
+                {
+                    // 10 columns
+                    separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                                     TypeWidth + StatusWidth + LeavesAvailedWidth + TotalLeavesWidth + (10 * 2) + 1;
+                    printTableHeaderForFullTimer();
+                }
+                else if(sType == CONTRACT)
+                {
+                    // 9 columns
+                    separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                                     TypeWidth + StatusWidth + AgencyWidth + (9 * 2) + 1;
+                    printTableHeaderForContractEmp();
+                }
+                else if(sType == INTERN)
+                {
+                    // 10 columns
+                    separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                                     TypeWidth + StatusWidth + CollegeWidth + BranchWidth + (10 * 2) + 1;
+                    printTableHeaderForIntern();
+                }
+                else
+                {
+                    // 13 columns
+                    separatorLength = NameWidth + IdWidth + GenderWidth + DobWidth + DojWidth + DolWidth +
+                                     TypeWidth + StatusWidth + CollegeWidth + BranchWidth +
+                                     LeavesAvailedWidth + TotalLeavesWidth + AgencyWidth + (13 * 2) + 1;
+                    printTableHeader();
+                }
+                
+                printEmployeeTableRow(sEmp, true);
+                cout << string(separatorLength, '-') << "\n";
+                sFound = true;
+                break;
+            }
+        }
+    }
+    
+    if(!sFound)
+    {
+        cout << "Employee with ID '" << idParm << "' not found!\n";
     }
 }
 
@@ -658,7 +877,7 @@ void XyzEmployeeManager::printEmployeeSummary(XyzEmployeeIF* empParm)
     cout << "\n";
 }
 
-void XyzEmployeeManager::printEmployeeTableRow(XyzEmployeeIF* empParm)
+void XyzEmployeeManager::printEmployeeTableRow(XyzEmployeeIF* empParm, bool typeSpecific)
 {
     if(!empParm)
     {
@@ -691,43 +910,100 @@ void XyzEmployeeManager::printEmployeeTableRow(XyzEmployeeIF* empParm)
     else if(sStatusVal == INACTIVE) sStatus = "Inactive";
     else if(sStatusVal == RESIGNED) sStatus = "Resigned";
     
-    // Get type-specific info
-    string sCollege = "NA";
-    string sBranch = "NA";
-    string sLeavesAvailed = "NA";
-    string sTotalLeaves = "NA";
-    string sAgency = "NA";
-    
-    if(sTypeVal == FULL_TIME)
-    {
-        sLeavesAvailed = to_string(empParm->getAvailedLeaves());
-        sTotalLeaves = to_string(empParm->getTotalLeaves());
-    }
-    else if(sTypeVal == CONTRACT)
-    {
-        sAgency = empParm->getAgencyName();
-    }
-    else if(sTypeVal == INTERN)
-    {
-        sCollege = empParm->getCollegeName();
-        sBranch = empParm->getBranchName();
-    }
-    
     cout << left;
-    cout << "| " << setw(NameWidth)           << sName
-         << "| " << setw(IdWidth)             << sId
-         << "| " << setw(GenderWidth)         << sGender
-         << "| " << setw(DobWidth)            << sDOB
-         << "| " << setw(DojWidth)            << sDOJ
-         << "| " << setw(DolWidth)            << sDOL
-         << "| " << setw(TypeWidth)           << sType
-         << "| " << setw(StatusWidth)         << sStatus
-         << "| " << setw(CollegeWidth)        << sCollege
-         << "| " << setw(BranchWidth)         << sBranch
-         << "| " << setw(LeavesAvailedWidth)  << sLeavesAvailed
-         << "| " << setw(TotalLeavesWidth)    << sTotalLeaves
-         << "| " << setw(AgencyWidth)         << sAgency
-         << "|\n";
+    
+    if(typeSpecific)
+    {
+        // Print only type-specific columns
+        if(sTypeVal == FULL_TIME)
+        {
+            string sLeavesAvailed = to_string(empParm->getAvailedLeaves());
+            string sTotalLeaves = to_string(empParm->getTotalLeaves());
+            
+            cout << "| " << setw(NameWidth)           << sName
+                 << "| " << setw(IdWidth)             << sId
+                 << "| " << setw(GenderWidth)         << sGender
+                 << "| " << setw(DobWidth)            << sDOB
+                 << "| " << setw(DojWidth)            << sDOJ
+                 << "| " << setw(DolWidth)            << sDOL
+                 << "| " << setw(TypeWidth)           << sType
+                 << "| " << setw(StatusWidth)         << sStatus
+                 << "| " << setw(LeavesAvailedWidth)  << sLeavesAvailed
+                 << "| " << setw(TotalLeavesWidth)    << sTotalLeaves
+                 << "|\n";
+        }
+        else if(sTypeVal == CONTRACT)
+        {
+            string sAgency = empParm->getAgencyName();
+            
+            cout << "| " << setw(NameWidth)           << sName
+                 << "| " << setw(IdWidth)             << sId
+                 << "| " << setw(GenderWidth)         << sGender
+                 << "| " << setw(DobWidth)            << sDOB
+                 << "| " << setw(DojWidth)            << sDOJ
+                 << "| " << setw(DolWidth)            << sDOL
+                 << "| " << setw(TypeWidth)           << sType
+                 << "| " << setw(StatusWidth)         << sStatus
+                 << "| " << setw(AgencyWidth)         << sAgency
+                 << "|\n";
+        }
+        else if(sTypeVal == INTERN)
+        {
+            string sCollege = empParm->getCollegeName();
+            string sBranch = empParm->getBranchName();
+            
+            cout << "| " << setw(NameWidth)           << sName
+                 << "| " << setw(IdWidth)             << sId
+                 << "| " << setw(GenderWidth)         << sGender
+                 << "| " << setw(DobWidth)            << sDOB
+                 << "| " << setw(DojWidth)            << sDOJ
+                 << "| " << setw(DolWidth)            << sDOL
+                 << "| " << setw(TypeWidth)           << sType
+                 << "| " << setw(StatusWidth)         << sStatus
+                 << "| " << setw(CollegeWidth)        << sCollege
+                 << "| " << setw(BranchWidth)         << sBranch
+                 << "|\n";
+        }
+    }
+    else
+    {
+        // Print all columns (original behavior)
+        string sCollege = "NA";
+        string sBranch = "NA";
+        string sLeavesAvailed = "NA";
+        string sTotalLeaves = "NA";
+        string sAgency = "NA";
+        
+        if(sTypeVal == FULL_TIME)
+        {
+            sLeavesAvailed = to_string(empParm->getAvailedLeaves());
+            sTotalLeaves = to_string(empParm->getTotalLeaves());
+        }
+        else if(sTypeVal == CONTRACT)
+        {
+            sAgency = empParm->getAgencyName();
+        }
+        else if(sTypeVal == INTERN)
+        {
+            sCollege = empParm->getCollegeName();
+            sBranch = empParm->getBranchName();
+        }
+        
+        cout << "| " << setw(NameWidth)           << sName
+             << "| " << setw(IdWidth)             << sId
+             << "| " << setw(GenderWidth)         << sGender
+             << "| " << setw(DobWidth)            << sDOB
+             << "| " << setw(DojWidth)            << sDOJ
+             << "| " << setw(DolWidth)            << sDOL
+             << "| " << setw(TypeWidth)           << sType
+             << "| " << setw(StatusWidth)         << sStatus
+             << "| " << setw(CollegeWidth)        << sCollege
+             << "| " << setw(BranchWidth)         << sBranch
+             << "| " << setw(LeavesAvailedWidth)  << sLeavesAvailed
+             << "| " << setw(TotalLeavesWidth)    << sTotalLeaves
+             << "| " << setw(AgencyWidth)         << sAgency
+             << "|\n";
+    }
 }
 
 void XyzEmployeeManager::printEmployeeDetails(XyzEmployeeIF* empParm)

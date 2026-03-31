@@ -18,7 +18,7 @@ namespace EmpRandDataGen
     int getRandomEmpStatus();
 
     string getRandomEmpDob();
-    string getRandomEmpDoJ();
+    string getRandomEmpDoJ(const string& dobParm);
     string getRandomEmpDoL(const string& dojParm, int empTypeParm);
 
     
