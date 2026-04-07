@@ -15,9 +15,9 @@ void printMainMenu()
         << "| 3. Remove an employee                |\n"
         << "| 4. Get Employee Details              |\n"
         << "| 5. Others.                           |\n"
-        << "|----------------------------------    |\n"
+        << "|--------------------------------------|\n"
         << "|      Press -1 to exit                |\n"
-        << "|----------------------------------    |\n";
+        << "|--------------------------------------|\n";
 }
 
 void printAddEmployeeOption()
@@ -45,7 +45,7 @@ void printXyzEmpSummaryMenu()
          << "| 4. Employee Summary (A/I/R)                    |\n"
          << "| 5. Display Employee Details                    |\n"
          << "| (-1 to Go Back)                                |\n"
-         << "--------------------------------------------------\n";
+         << "-------------------------------------------------|\n";
 }
 
 void printOthersMenu()
@@ -59,7 +59,7 @@ void printOthersMenu()
          << "| 3. Search Employee by ID                        |\n"
          << "| 4. Search Employee by Name                      |\n"
          << "| (-1 to Go Back)                                 |\n"
-         << "---------------------------------------------------\n";
+         << "--------------------------------------------------|\n";
 }
 
 int chooseMainMenuChoice()

@@ -54,15 +54,13 @@ void XyzEmployeeManager::pAddFullTimeEmployee()
     XyzEmployeeIF* sNewEmp = new XyzFullTimeEmployee(mEmpIdCounter);
     unsigned int sEmpStatus = sNewEmp->getEmployeeStatus();
 
-    if(sEmpStatus == ACTIVE || sEmpStatus == INACTIVE)
+    while(sEmpStatus == RESIGNED)
     {
-        mActiveInactiveEmpDeque->pushBack(sNewEmp);
+        delete sNewEmp;
+        sNewEmp = new XyzFullTimeEmployee(mEmpIdCounter);
+        sEmpStatus = sNewEmp->getEmployeeStatus();
     }
-
-    if(sEmpStatus == RESIGNED)
-    {
-        mResignedEmpDeque->pushBack(sNewEmp);
-    }
+    mActiveInactiveEmpDeque->pushBack(sNewEmp);
     mEmpIdCounter++;
     
     // Print employee summary after adding
@@ -75,15 +73,14 @@ void XyzEmployeeManager::pAddContractEmployee()
     XyzEmployeeIF* sNewEmp = new XyzContractEmployee(mEmpIdCounter);
     unsigned int sEmpStatus = sNewEmp->getEmployeeStatus();
 
-    if(sEmpStatus == ACTIVE || sEmpStatus == INACTIVE)
+    while(sEmpStatus == RESIGNED)
     {
-        mActiveInactiveEmpDeque->pushBack(sNewEmp);
+        delete sNewEmp;
+        sNewEmp = new XyzContractEmployee(mEmpIdCounter);
+        sEmpStatus = sNewEmp->getEmployeeStatus();
     }
-    
-    if(sEmpStatus == RESIGNED)
-    {
-        mResignedEmpDeque->pushBack(sNewEmp);
-    }
+
+    mActiveInactiveEmpDeque->pushBack(sNewEmp);
     mEmpIdCounter++;
     
     // Print employee summary after adding
@@ -95,15 +92,13 @@ void XyzEmployeeManager::pAddInternEmployee()
     XyzEmployeeIF* sNewEmp = new XyzInternEmployee(mEmpIdCounter);
     unsigned int sEmpStatus = sNewEmp->getEmployeeStatus();
 
-    if(sEmpStatus == ACTIVE || sEmpStatus == INACTIVE)
+    while(sEmpStatus == RESIGNED)
     {
-        mActiveInactiveEmpDeque->pushBack(sNewEmp);
+        delete sNewEmp;
+        sNewEmp = new XyzInternEmployee(mEmpIdCounter);
+        sEmpStatus = sNewEmp->getEmployeeStatus();
     }
-    
-    if(sEmpStatus == RESIGNED)
-    {
-        mResignedEmpDeque->pushBack(sNewEmp);
-    }
+    mActiveInactiveEmpDeque->pushBack(sNewEmp);
     mEmpIdCounter++;
     
     // Print employee summary after adding
@@ -204,12 +199,12 @@ void XyzEmployeeManager::processEmployees()
                 unsigned int sChoice = chooseOthersMenuOption();
                 if(sChoice == ADD_LEAVES)
                 {
-                    unsigned int sEmployeeID = safeInput<unsigned int>("Enter Employee ID: ");
+                    string sEmployeeID = safeInput<string>("Employee ID (e.g., Xyz0001F): ");
                     addLeavesForFullTimers(sEmployeeID);
                 }
                 else if (sChoice == CONVERT_INTERN)
                 {
-                    unsigned int sEmployeeID = safeInput<unsigned int>("Enter Employee ID: ");
+                    string sEmployeeID = safeInput<string>("Employee ID (e.g., Xyz0001F): ");
                     convertInternToFulltimer(sEmployeeID);
                 }
                 else if (sChoice == SEARCH_BY_ID)
@@ -285,15 +280,9 @@ void XyzEmployeeManager::removeEmployee(string idParm)
     }
 }
 
-void XyzEmployeeManager::convertInternToFulltimer(unsigned int idParm)
+void XyzEmployeeManager::convertInternToFulltimer(string idParm)
 {
-    // Format ID as 4-digit with leading zeros
-    string sIdStr = to_string(idParm);
-    while(sIdStr.length() < 4)
-    {
-        sIdStr = "0" + sIdStr;
-    }
-    string sSearchId = "Xyz" + sIdStr + "I";
+    string sSearchId = idParm;
     bool sFound = false;
     
     // Search for intern in active/inactive employees
@@ -356,15 +345,9 @@ void XyzEmployeeManager::pAddRandomMultipleEmployees()
 }
 
 
-void XyzEmployeeManager::addLeavesForFullTimers(unsigned int idParm)
+void XyzEmployeeManager::addLeavesForFullTimers(string idParm)
 {
-    // Format ID as 4-digit with leading zeros
-    string sIdStr = to_string(idParm);
-    while(sIdStr.length() < 4)
-    {
-        sIdStr = "0" + sIdStr;
-    }
-    string sSearchId = "Xyz" + sIdStr + "F";
+    string sSearchId = idParm;
     bool sFound = false;
     
     // Search for full-time employee
@@ -378,13 +361,20 @@ void XyzEmployeeManager::addLeavesForFullTimers(unsigned int idParm)
             unsigned int sCurrentTotal = sEmp->getTotalLeaves();
             unsigned int sNewTotal = sCurrentTotal + sLeavesToAdd;
             
-            sEmp->setTotalLeaves(sNewTotal);
-            
-            cout << "Added " << sLeavesToAdd << " leaves to employee " << sEmp->getEmployeeName() << "\n";
-            cout << "Previous Total: " << sCurrentTotal << ", New Total: " << sNewTotal << "\n";
-            
-            sFound = true;
-            break;
+            if(sNewTotal <= EMP_TOTAL_LEAVES)
+            {
+                sEmp->setTotalLeaves(sNewTotal);
+                
+                cout << "Added " << sLeavesToAdd << " leaves to employee " << sEmp->getEmployeeName() << "\n";
+                cout << "Previous Total: " << sCurrentTotal << ", New Total: " << sNewTotal << "\n";
+                
+                sFound = true;
+                break;
+            }
+            else
+            {
+                cout << "Invalid number of leaves\n";
+            }
         }
     }
     

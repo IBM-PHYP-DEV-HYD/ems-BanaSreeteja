@@ -82,7 +82,7 @@ namespace EmpRandDataGen
             idStr = "0" + idStr;
         }
 
-        return "Xyz" + idStr + sType;
+        return "XYZ" + idStr + sType;
     }
 
     int getRandomEmpStatus()
