@@ -46,8 +46,8 @@ class XyzEmployeeManager
     void printEmpInfo(string);
     void printEmpInfoByIdString(string);
 
-    void convertInternToFulltimer(unsigned int);
-    void addLeavesForFullTimers(unsigned int);
+    void convertInternToFulltimer(string);
+    void addLeavesForFullTimers(string);
 };
 
 #endif
